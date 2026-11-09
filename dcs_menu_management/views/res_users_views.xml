@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 DevsCodeSpace. License LGPL-3. -->
+<odoo>
+    <!-- User form (administrators) -->
+    <record id="dcs_view_users_form" model="ir.ui.view">
+        <field name="name">res.users.form.dcs.menu</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='preferences']" position="after">
+                <page string="Menu Visibility" name="dcs_menu_visibility" invisible="share"
+                      groups="base.group_system,dcs_menu_management.group_menu_manager">
+                    <group>
+                        <field name="dcs_allow_menu_preferences" widget="boolean_toggle"/>
+                        <field name="dcs_personal_hidden_menu_ids" widget="many2many_tags"
+                               invisible="not dcs_allow_menu_preferences"
+                               context="{'ir.ui.menu.full_list': True}" options="{'no_create': True}"/>
+                    </group>
+                    <button name="action_dcs_reset_personal_menus" type="object" string="Reset Personal Menus"
+                            class="btn-secondary" invisible="not dcs_personal_hidden_menu_ids"
+                            confirm="Show again every menu this user hid personally?"/>
+                    <p class="text-muted small mt-3">
+                        Administrator restrictions are configured per menu in
+                        Settings / Menu Management / Menu Configuration.
+                    </p>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- My Preferences (the user themself) -->
+    <record id="dcs_view_users_form_simple_modif" model="ir.ui.view">
+        <field name="name">res.users.preferences.dcs.menu</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="My Menus" name="dcs_my_menus" invisible="not dcs_allow_menu_preferences">
+                    <field name="dcs_allow_menu_preferences" invisible="1"/>
+                    <p class="text-muted">
+                        Hide the menus you do not use. This only changes your own menu bar; it does not
+                        change what you are allowed to do in Odoo.
+                    </p>
+                    <button name="action_dcs_open_personal_menus" type="object" string="Choose Menus to Hide"
+                            icon="fa-list-ul" class="btn-primary mb-3"/>
+                    <group>
+                        <field name="dcs_personal_hidden_menu_ids" widget="many2many_tags" readonly="0"
+                               string="Hidden Menus" options="{'no_create': True}"
+                               placeholder="No hidden menu"/>
+                    </group>
+                    <p class="text-muted small">Remove a menu from the list to show it again. Reload the page to apply.</p>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Users allowed to hide menus personally -->
+    <record id="dcs_view_users_list_personal" model="ir.ui.view">
+        <field name="name">res.users.list.dcs.personal</field>
+        <field name="model">res.users</field>
+        <field name="priority">90</field>
+        <field name="arch" type="xml">
+            <list string="Personal Menu Preferences" editable="bottom" create="0" delete="0">
+                <field name="name" readonly="1"/>
+                <field name="login" readonly="1"/>
+                <field name="company_id" readonly="1" groups="base.group_multi_company" optional="show"/>
+                <field name="dcs_allow_menu_preferences" widget="boolean_toggle"/>
+                <field name="dcs_personal_hidden_menu_ids" widget="many2many_tags" readonly="1"
+                       context="{'ir.ui.menu.full_list': True}"/>
+                <button name="action_dcs_reset_personal_menus" type="object" icon="fa-undo"
+                        title="Reset personal menus" invisible="not dcs_personal_hidden_menu_ids"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="dcs_view_users_search_personal" model="ir.ui.view">
+        <field name="name">res.users.search.dcs.personal</field>
+        <field name="model">res.users</field>
+        <field name="priority">90</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" filter_domain="['|', ('name', 'ilike', self), ('login', 'ilike', self)]"/>
+                <field name="dcs_personal_hidden_menu_ids" string="Hidden Menu"/>
+                <filter name="filter_allowed" string="Allowed" domain="[('dcs_allow_menu_preferences', '=', True)]"/>
+                <filter name="filter_not_allowed" string="Not Allowed" domain="[('dcs_allow_menu_preferences', '=', False)]"/>
+                <filter name="filter_hiding" string="Hiding Menus" domain="[('dcs_personal_hidden_menu_ids', '!=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dcs_personal_users" model="ir.actions.act_window">
+        <field name="name">Personal Preferences</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('share', '=', False)]</field>
+        <field name="context">{'search_default_filter_allowed': 1, 'ir.ui.menu.full_list': True}</field>
+        <field name="search_view_id" ref="dcs_view_users_search_personal"/>
+        <field name="view_ids" eval="[Command.clear(),
+            Command.create({'view_mode': 'list', 'view_id': ref('dcs_view_users_list_personal')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Nobody can hide menus personally yet</p>
+            <p>Remove the <em>Allowed</em> filter and switch on <strong>Hide Menus Through Preferences</strong>
+               for the users who should be able to hide the menus they do not use.</p>
+        </field>
+    </record>
+</odoo>

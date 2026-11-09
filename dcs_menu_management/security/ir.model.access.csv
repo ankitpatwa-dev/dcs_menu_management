@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dcs_menu_rule_system,dcs.menu.rule system,model_dcs_menu_rule,base.group_system,1,1,1,1
+access_dcs_menu_rule_manager,dcs.menu.rule manager,model_dcs_menu_rule,group_menu_manager,1,1,1,1
+access_dcs_menu_personal_wizard_user,dcs.menu.personal.wizard user,model_dcs_menu_personal_wizard,base.group_user,1,1,1,1
+access_dcs_menu_personal_wizard_line_user,dcs.menu.personal.wizard.line user,model_dcs_menu_personal_wizard_line,base.group_user,1,1,1,1

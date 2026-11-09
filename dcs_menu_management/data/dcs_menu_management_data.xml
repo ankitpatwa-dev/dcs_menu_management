@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 DevsCodeSpace. License LGPL-3. -->
+<odoo>
+    <record id="action_dcs_menu_tree" model="ir.actions.client">
+        <field name="name">Menu Configuration</field>
+        <field name="tag">dcs_menu_management.menu_tree</field>
+        <field name="path">menu-management</field>
+    </record>
+</odoo>

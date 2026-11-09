@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 DevsCodeSpace. License LGPL-3. -->
+<odoo>
+    <record id="dcs_ir_ui_menu_view_list" model="ir.ui.view">
+        <field name="name">ir.ui.menu.list.dcs</field>
+        <field name="model">ir.ui.menu</field>
+        <field name="priority">90</field>
+        <field name="groups_id" eval="[Command.set([ref('base.group_system'), ref('group_menu_manager')])]"/>
+        <field name="arch" type="xml">
+            <list string="Menus" create="0" delete="0" edit="0" default_order="parent_path"
+                  decoration-muted="not active">
+                <field name="complete_name" string="Menu"/>
+                <field name="dcs_xml_id" optional="show"/>
+                <field name="sequence" optional="hide"/>
+                <field name="dcs_action_info" optional="show"/>
+                <field name="groups_id" widget="many2many_tags" optional="show" string="Odoo Groups"/>
+                <field name="dcs_visibility_state" widget="badge"
+                       decoration-success="dcs_visibility_state == 'default'"
+                       decoration-warning="dcs_visibility_state == 'restricted'"
+                       decoration-danger="dcs_visibility_state == 'hidden'"
+                       decoration-muted="dcs_visibility_state == 'suspended'"/>
+                <field name="dcs_rule_summary" optional="show"/>
+                <field name="active" column_invisible="True"/>
+                <button groups="base.group_system,dcs_menu_management.group_menu_manager" name="action_dcs_toggle_hidden" type="object" icon="fa-eye-slash"
+                        title="Hide for everyone" invisible="dcs_visibility_state == 'hidden'"/>
+                <button groups="base.group_system,dcs_menu_management.group_menu_manager" name="action_dcs_toggle_hidden" type="object" icon="fa-eye"
+                        title="Show again" invisible="dcs_visibility_state != 'hidden'"/>
+                <button groups="base.group_system,dcs_menu_management.group_menu_manager" name="action_dcs_configure" type="object" icon="fa-sliders"
+                        title="Configure visibility"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="dcs_ir_ui_menu_view_form" model="ir.ui.view">
+        <field name="name">ir.ui.menu.form.dcs</field>
+        <field name="model">ir.ui.menu</field>
+        <field name="priority">90</field>
+        <field name="groups_id" eval="[Command.set([ref('base.group_system'), ref('group_menu_manager')])]"/>
+        <field name="arch" type="xml">
+            <form string="Menu" create="0" delete="0" edit="0">
+                <header>
+                    <button groups="base.group_system,dcs_menu_management.group_menu_manager" name="action_dcs_configure" type="object" string="Configure Visibility"
+                            class="btn-primary"/>
+                    <button groups="base.group_system,dcs_menu_management.group_menu_manager" name="action_dcs_toggle_hidden" type="object" string="Hide for Everyone"
+                            invisible="dcs_visibility_state == 'hidden'"/>
+                    <button groups="base.group_system,dcs_menu_management.group_menu_manager" name="action_dcs_toggle_hidden" type="object" string="Show Again"
+                            invisible="dcs_visibility_state != 'hidden'"/>
+                    <button groups="base.group_system,dcs_menu_management.group_menu_manager" name="action_dcs_reset" type="object" string="Remove Restrictions"
+                            invisible="dcs_visibility_state == 'default'"
+                            confirm="Remove every restriction configured on this menu?"/>
+                    <field name="dcs_visibility_state" widget="statusbar" statusbar_visible="default,restricted,hidden"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                        <field name="complete_name" class="text-muted"/>
+                    </div>
+                    <group>
+                        <group string="Menu">
+                            <field name="dcs_xml_id"/>
+                            <field name="parent_id" context="{'ir.ui.menu.full_list': True}"/>
+                            <field name="sequence"/>
+                            <field name="dcs_child_count"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Odoo Standard Access">
+                            <field name="dcs_action_info"/>
+                            <field name="groups_id" widget="many2many_tags" string="Odoo Groups"/>
+                        </group>
+                    </group>
+                    <group string="Visibility Restrictions">
+                        <field name="dcs_rule_summary" string="Summary"/>
+                        <field name="dcs_rule_id" string="Rule" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="dcs_ir_ui_menu_view_search" model="ir.ui.view">
+        <field name="name">ir.ui.menu.search.dcs</field>
+        <field name="model">ir.ui.menu</field>
+        <field name="priority">90</field>
+        <field name="groups_id" eval="[Command.set([ref('base.group_system'), ref('group_menu_manager')])]"/>
+        <field name="arch" type="xml">
+            <search string="Menus">
+                <field name="name" string="Menu"/>
+                <field name="dcs_xml_id"/>
+                <field name="parent_id" string="Parent Menu"/>
+                <field name="dcs_rule_ids" string="User"
+                       filter_domain="['|', ('dcs_rule_ids.hide_user_ids', 'ilike', self), ('dcs_rule_ids.show_user_ids', 'ilike', self)]"/>
+                <field name="dcs_rule_ids" string="Company"
+                       filter_domain="['|', ('dcs_rule_ids.hide_company_ids', 'ilike', self), ('dcs_rule_ids.show_company_ids', 'ilike', self)]"/>
+                <field name="dcs_rule_ids" string="Restriction Group"
+                       filter_domain="['|', ('dcs_rule_ids.hide_group_ids', 'ilike', self), ('dcs_rule_ids.show_group_ids', 'ilike', self)]"/>
+                <field name="groups_id" string="Odoo Group"/>
+                <filter name="filter_hidden" string="Hidden for Everyone"
+                        domain="[('dcs_visibility_state', '=', 'hidden')]"/>
+                <filter name="filter_restricted" string="Restricted"
+                        domain="[('dcs_visibility_state', '=', 'restricted')]"/>
+                <filter name="filter_default" string="Odoo Default"
+                        domain="[('dcs_visibility_state', '=', 'default')]"/>
+                <filter name="filter_suspended" string="Rule Archived"
+                        domain="[('dcs_visibility_state', '=', 'suspended')]"/>
+                <separator/>
+                <filter name="filter_users" string="User Restrictions"
+                        domain="['|', ('dcs_rule_ids.hide_user_ids', '!=', False), ('dcs_rule_ids.show_user_ids', '!=', False)]"/>
+                <filter name="filter_companies" string="Company Restrictions"
+                        domain="['|', ('dcs_rule_ids.hide_company_ids', '!=', False), ('dcs_rule_ids.show_company_ids', '!=', False)]"/>
+                <filter name="filter_groups" string="Group Restrictions"
+                        domain="['|', ('dcs_rule_ids.hide_group_ids', '!=', False), ('dcs_rule_ids.show_group_ids', '!=', False)]"/>
+                <separator/>
+                <filter name="filter_apps" string="Applications" domain="[('parent_id', '=', False)]"/>
+                <filter name="filter_with_action" string="With Action" domain="[('action', '!=', False)]"/>
+                <filter name="filter_archived" string="Archived Menus" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_parent" string="Parent Menu" context="{'group_by': 'parent_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dcs_ir_ui_menu" model="ir.actions.act_window">
+        <field name="name">All Menus</field>
+        <field name="res_model">ir.ui.menu</field>
+        <field name="view_mode">list,form</field>
+        <field name="path">menu-management-list</field>
+        <field name="context">{'ir.ui.menu.full_list': True}</field>
+        <field name="search_view_id" ref="dcs_ir_ui_menu_view_search"/>
+        <field name="view_ids" eval="[Command.clear(),
+            Command.create({'view_mode': 'list', 'view_id': ref('dcs_ir_ui_menu_view_list')}),
+            Command.create({'view_mode': 'form', 'view_id': ref('dcs_ir_ui_menu_view_form')})]"/>
+    </record>
+</odoo>

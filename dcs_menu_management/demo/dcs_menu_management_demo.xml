@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 DevsCodeSpace. License LGPL-3. -->
+<odoo noupdate="1">
+    <!-- The demo user may hide menus through their preferences -->
+    <record id="base.user_demo" model="res.users">
+        <field name="dcs_allow_menu_preferences" eval="True"/>
+    </record>
+
+    <!-- Example rule, archived so it changes nothing until activated -->
+    <record id="demo_rule_translations" model="dcs.menu.rule">
+        <field name="menu_id" ref="base.menu_translation"/>
+        <field name="show_group_ids" eval="[Command.set([ref('base.group_system')])]"/>
+        <field name="note">Example: keep the Translations menu for Settings administrators only. Unarchive to try it.</field>
+        <field name="active" eval="False"/>
+    </record>
+</odoo>

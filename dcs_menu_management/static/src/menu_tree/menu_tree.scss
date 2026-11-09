@@ -1,0 +1,239 @@
+// Copyright 2026 DevsCodeSpace. License LGPL-3.
+
+.o_dcs_menu_tree {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .o_dcs_search {
+        max-width: 420px;
+        min-width: 220px;
+        flex: 1 1 280px;
+    }
+
+    .o_dcs_body {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .o_dcs_side {
+        flex: 0 0 260px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: sticky;
+        top: 16px;
+    }
+
+    .o_dcs_toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        padding: 10px 12px;
+        background-color: var(--bs-body-bg);
+        border-bottom: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius-lg, 8px) var(--bs-border-radius-lg, 8px) 0 0;
+    }
+
+    .o_dcs_card {
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius-lg, 8px);
+        padding: 12px 14px;
+        background-color: var(--bs-body-bg);
+    }
+
+    .o_dcs_card_title {
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .o_dcs_stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin: 0;
+        dt {
+            font-weight: 400;
+            font-size: 0.75rem;
+            color: var(--bs-secondary-color);
+        }
+        dd {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+    }
+
+    .o_dcs_preview_summary {
+        font-size: 0.85rem;
+    }
+
+    .o_dcs_main {
+        flex: 1 1 auto;
+        min-width: 0;
+        border: 1px solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius-lg, 8px);
+        background-color: var(--bs-body-bg);
+        width: 100%;
+    }
+
+    .o_dcs_row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 38px;
+        padding: 3px 8px 3px 0;
+        border-bottom: 1px solid var(--bs-border-color-translucent, var(--bs-border-color));
+
+        &:last-child {
+            border-bottom: 0;
+        }
+        &:hover {
+            background-color: var(--bs-tertiary-bg, rgba(0, 0, 0, 0.03));
+            .o_dcs_actions_cell {
+                opacity: 1;
+            }
+        }
+        &.o_dcs_root .o_dcs_name {
+            font-weight: 600;
+        }
+        &.o_dcs_inactive .o_dcs_name {
+            color: var(--bs-secondary-color);
+            text-decoration: line-through;
+        }
+        &.o_dcs_matched .o_dcs_name {
+            background-color: rgba(var(--bs-warning-rgb), 0.2);
+            border-radius: 3px;
+            padding: 0 2px;
+        }
+        &.o_dcs_preview_hidden .o_dcs_name {
+            color: var(--bs-secondary-color);
+        }
+        &.o_dcs_context {
+            opacity: 0.5;
+        }
+    }
+
+    .o_dcs_name_cell {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex: 1 1 40%;
+        min-width: 0;
+    }
+
+    .o_dcs_caret {
+        width: 24px;
+        padding: 0;
+        line-height: 1;
+        &:disabled {
+            opacity: 0.4;
+        }
+    }
+
+    .o_dcs_caret_spacer {
+        display: inline-block;
+        width: 24px;
+    }
+
+    .o_dcs_node_icon {
+        color: var(--bs-secondary-color);
+    }
+
+    .o_dcs_name {
+        cursor: default;
+        white-space: nowrap;
+    }
+
+    .o_dcs_xmlid {
+        font-family: var(--bs-font-monospace);
+        font-size: 0.72rem;
+        color: var(--bs-secondary-color);
+        margin-left: 6px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .o_dcs_inherited {
+        color: var(--bs-warning);
+        font-size: 0.8rem;
+    }
+
+    .o_dcs_meta_cell {
+        flex: 0 1 26%;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+        font-size: 0.8rem;
+        color: var(--bs-secondary-color);
+    }
+
+    .o_dcs_action {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .o_dcs_status_cell {
+        flex: 0 1 24%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        justify-content: flex-end;
+    }
+
+    .o_dcs_badge {
+        font-weight: 500;
+    }
+
+    .o_dcs_preview_cell {
+        flex: 0 0 210px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .o_dcs_actions_cell {
+        flex: 0 0 auto;
+        display: flex;
+        gap: 4px;
+        opacity: 0.55;
+        transition: opacity 0.15s;
+        .btn:focus-visible {
+            opacity: 1;
+        }
+    }
+
+    .o_dcs_empty {
+        padding: 48px 16px;
+        text-align: center;
+        color: var(--bs-secondary-color);
+    }
+
+    @media (max-width: 991.98px) {
+        .o_dcs_body {
+            flex-direction: column;
+        }
+        .o_dcs_side {
+            flex: 0 0 auto;
+        }
+        .o_dcs_meta_cell,
+        .o_dcs_xmlid {
+            display: none;
+        }
+        .o_dcs_actions_cell {
+            opacity: 1;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .o_dcs_actions_cell {
+            transition: none;
+        }
+    }
+}

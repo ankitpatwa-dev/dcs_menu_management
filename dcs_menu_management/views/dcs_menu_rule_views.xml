@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 DevsCodeSpace. License LGPL-3. -->
+<odoo>
+    <record id="dcs_menu_rule_view_form" model="ir.ui.view">
+        <field name="name">dcs.menu.rule.form</field>
+        <field name="model">dcs.menu.rule</field>
+        <field name="arch" type="xml">
+            <form string="Menu Visibility Rule">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <field name="active" invisible="1"/>
+                    <field name="is_protected" invisible="1"/>
+                    <field name="menu_active" invisible="1"/>
+                    <div class="oe_title">
+                        <label for="menu_id"/>
+                        <h1>
+                            <field name="menu_id" readonly="id" options="{'no_create': True, 'no_open': True}"
+                                   placeholder="Select a menu..."/>
+                        </h1>
+                        <div class="text-muted">
+                            <field name="menu_xml_id" class="me-3" invisible="not menu_xml_id"/>
+                            <field name="menu_action_info" invisible="not menu_action_info"/>
+                        </div>
+                    </div>
+                    <div class="alert alert-info" role="status" invisible="not is_protected">
+                        <i class="fa fa-shield me-1" title="Protected"/>
+                        This menu leads to Settings or Menu Management. Restrictions do not apply to menu
+                        administrators, so they can always undo a configuration.
+                    </div>
+                    <div class="alert alert-warning" role="status" invisible="menu_active or not menu_id">
+                        This menu is archived in Odoo; nobody sees it whatever this rule says.
+                    </div>
+                    <div class="alert alert-light border small mb-3" role="status">
+                        Rules only <strong>narrow</strong> what Odoo already shows: they never give
+                        access to a menu, an action or records. Every restriction applies to all sub-menus.
+                    </div>
+                    <group>
+                        <group string="Everyone">
+                            <field name="hide_globally" widget="boolean_toggle"/>
+                        </group>
+                        <group string="Odoo Standard Access">
+                            <field name="menu_group_ids" widget="many2many_tags"
+                                   placeholder="No group: visible if the user can read the action's model"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Users" name="users">
+                            <group>
+                                <field name="hide_user_ids" widget="many2many_tags"
+                                       options="{'no_create': True}" placeholder="Nobody"/>
+                                <field name="show_user_ids" widget="many2many_tags"
+                                       options="{'no_create': True}" placeholder="Every user allowed by Odoo"/>
+                            </group>
+                        </page>
+                        <page string="Companies" name="companies">
+                            <group>
+                                <field name="hide_company_ids" widget="many2many_tags"
+                                       options="{'no_create': True}" placeholder="No company"/>
+                                <field name="show_company_ids" widget="many2many_tags"
+                                       options="{'no_create': True}" placeholder="Every company"/>
+                            </group>
+                            <p class="text-muted small">
+                                Evaluated against the companies selected in the company switcher. With several
+                                active companies, the menu stays visible as long as one of them allows it.
+                            </p>
+                        </page>
+                        <page string="Security Groups" name="groups">
+                            <group>
+                                <field name="show_group_ids" widget="many2many_tags"
+                                       options="{'no_create': True}" placeholder="Every group"/>
+                                <field name="hide_group_ids" widget="many2many_tags"
+                                       options="{'no_create': True}" placeholder="No group"/>
+                            </group>
+                            <p class="text-muted small">
+                                Added on top of the menu's own Odoo groups shown above, which are never changed.
+                            </p>
+                        </page>
+                        <page string="Personal Preferences" name="personal">
+                            <field name="personal_user_ids" widget="many2many_tags" readonly="1"/>
+                            <p class="text-muted small">
+                                Users allowed to hide menus through their preferences who chose to hide this menu.
+                                Personal choices only affect the user who made them.
+                            </p>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="note" placeholder="Why this restriction exists, who asked for it..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="dcs_menu_rule_view_list" model="ir.ui.view">
+        <field name="name">dcs.menu.rule.list</field>
+        <field name="model">dcs.menu.rule</field>
+        <field name="arch" type="xml">
+            <list string="Menu Visibility Rules">
+                <field name="menu_complete_name" string="Menu"/>
+                <field name="menu_xml_id" optional="show"/>
+                <field name="hide_globally" widget="boolean_toggle" readonly="1"/>
+                <field name="hide_user_ids" widget="many2many_tags" optional="show"/>
+                <field name="show_user_ids" widget="many2many_tags" optional="show"/>
+                <field name="hide_company_ids" widget="many2many_tags" optional="hide" groups="base.group_multi_company"/>
+                <field name="show_company_ids" widget="many2many_tags" optional="show" groups="base.group_multi_company"/>
+                <field name="show_group_ids" widget="many2many_tags" optional="show"/>
+                <field name="hide_group_ids" widget="many2many_tags" optional="hide"/>
+                <field name="summary" optional="hide"/>
+                <field name="write_date" string="Last Change" optional="hide"/>
+                <field name="write_uid" string="Changed By" optional="hide"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="dcs_menu_rule_view_search" model="ir.ui.view">
+        <field name="name">dcs.menu.rule.search</field>
+        <field name="model">dcs.menu.rule</field>
+        <field name="arch" type="xml">
+            <search string="Menu Visibility Rules">
+                <field name="menu_complete_name" string="Menu"/>
+                <field name="hide_user_ids" string="User"
+                       filter_domain="['|', ('hide_user_ids', 'ilike', self), ('show_user_ids', 'ilike', self)]"/>
+                <field name="show_company_ids" string="Company"
+                       filter_domain="['|', ('hide_company_ids', 'ilike', self), ('show_company_ids', 'ilike', self)]"/>
+                <field name="show_group_ids" string="Group"
+                       filter_domain="['|', ('hide_group_ids', 'ilike', self), ('show_group_ids', 'ilike', self)]"/>
+                <filter name="filter_global" string="Hidden for Everyone" domain="[('hide_globally', '=', True)]"/>
+                <filter name="filter_users" string="User Restrictions"
+                        domain="['|', ('hide_user_ids', '!=', False), ('show_user_ids', '!=', False)]"/>
+                <filter name="filter_companies" string="Company Restrictions"
+                        domain="['|', ('hide_company_ids', '!=', False), ('show_company_ids', '!=', False)]"/>
+                <filter name="filter_groups" string="Group Restrictions"
+                        domain="['|', ('hide_group_ids', '!=', False), ('show_group_ids', '!=', False)]"/>
+                <separator/>
+                <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_changed_by" string="Changed By" context="{'group_by': 'write_uid'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_dcs_menu_rule" model="ir.actions.act_window">
+        <field name="name">Visibility Rules</field>
+        <field name="res_model">dcs.menu.rule</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'ir.ui.menu.full_list': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No menu restriction yet</p>
+            <p>Open <strong>Menu Configuration</strong> to browse the menu tree and restrict a menu
+               for everyone, some users, companies or security groups.</p>
+        </field>
+    </record>
+</odoo>

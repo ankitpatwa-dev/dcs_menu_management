@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 DevsCodeSpace. License LGPL-3. -->
+<odoo>
+    <menuitem id="menu_dcs_menu_management_root" name="Menu Management"
+              parent="base.menu_administration" sequence="45"
+              groups="base.group_system,group_menu_manager"/>
+    <menuitem id="menu_dcs_menu_configuration" name="Menu Configuration"
+              parent="menu_dcs_menu_management_root" action="action_dcs_menu_tree" sequence="10"/>
+    <menuitem id="menu_dcs_all_menus" name="All Menus"
+              parent="menu_dcs_menu_management_root" action="action_dcs_ir_ui_menu" sequence="20"/>
+    <menuitem id="menu_dcs_menu_rules" name="Visibility Rules"
+              parent="menu_dcs_menu_management_root" action="action_dcs_menu_rule" sequence="30"/>
+    <menuitem id="menu_dcs_personal_users" name="Personal Preferences"
+              parent="menu_dcs_menu_management_root" action="action_dcs_personal_users" sequence="40"/>
+</odoo>
