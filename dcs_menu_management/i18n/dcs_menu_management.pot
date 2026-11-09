@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-09 09:14+0000\n"
-"PO-Revision-Date: 2026-11-09 09:14+0000\n"
+"POT-Creation-Date: 2026-11-09 10:14+0000\n"
+"PO-Revision-Date: 2026-11-09 10:14+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,24 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: dcs_menu_management
+#: model:ir.module.module,description:base.module_dcs_menu_management
+msgid ""
+"\n"
+"Advanced Menu Management\n"
+"========================\n"
+"Centralised, auditable menu visibility for Odoo 20:\n"
+"\n"
+"* Interactive menu tree with search, filters and a per-user preview\n"
+"* Hide menus globally, for users, companies or security groups\n"
+"* \"Show only for\" restrictions for users, companies and groups\n"
+"* Personal menu preferences (\"Hide Menus Through Preferences\")\n"
+"* Never grants access: it only narrows Odoo's standard menu visibility\n"
+msgstr ""
+
+#. module: dcs_menu_management
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_rule_view_form
 msgid ""
-"<i class=\"fa fa-shield me-1\" title=\"Protected\"/>\n"
+"<i class=\"oi me-1\" data-icon=\"security\" title=\"Protected\"/>\n"
 "                        This menu leads to Settings or Menu Management. Restrictions do not apply to menu\n"
 "                        administrators, so they can always undo a configuration."
 msgstr ""
@@ -75,6 +90,11 @@ msgstr ""
 msgid ""
 "Administrator restrictions are configured per menu in\n"
 "                        Settings / Menu Management / Menu Configuration."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.module.module,shortdesc:base.module_dcs_menu_management
+msgid "Advanced Menu Management"
 msgstr ""
 
 #. module: dcs_menu_management
@@ -262,7 +282,7 @@ msgid "Configure visibility"
 msgstr ""
 
 #. module: dcs_menu_management
-#: model:ir.module.category,description:dcs_menu_management.module_category_menu_management
+#: model:res.groups.privilege,description:dcs_menu_management.res_groups_privilege_menu_management
 msgid ""
 "Configure who sees which menus (Advanced Menu Management by DevsCodeSpace)."
 msgstr ""
@@ -285,6 +305,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard__display_name
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard_line__display_name
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_rule__display_name
+#: model:ir.model.fields,field_description:dcs_menu_management.field_ir_http__display_name
+#: model:ir.model.fields,field_description:dcs_menu_management.field_ir_ui_menu__display_name
+#: model:ir.model.fields,field_description:dcs_menu_management.field_res_users__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -348,12 +371,6 @@ msgstr ""
 #. module: dcs_menu_management
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_rule_view_search
 msgid "Group"
-msgstr ""
-
-#. module: dcs_menu_management
-#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_ir_ui_menu_view_search
-#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_rule_view_search
-msgid "Group By"
 msgstr ""
 
 #. module: dcs_menu_management
@@ -513,6 +530,13 @@ msgid "Hide for everyone"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.module.module,summary:base.module_dcs_menu_management
+msgid ""
+"Hide or show Odoo menus globally, per user, company or security group, and "
+"let users hide the menus they do not use."
+msgstr ""
+
+#. module: dcs_menu_management
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form_simple_modif
 msgid ""
 "Hide the menus you do not use. This only changes your own menu bar; it does not\n"
@@ -545,6 +569,9 @@ msgstr ""
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard__id
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard_line__id
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_rule__id
+#: model:ir.model.fields,field_description:dcs_menu_management.field_ir_http__id
+#: model:ir.model.fields,field_description:dcs_menu_management.field_ir_ui_menu__id
+#: model:ir.model.fields,field_description:dcs_menu_management.field_res_users__id
 msgid "ID"
 msgstr ""
 
@@ -637,8 +664,8 @@ msgid "Menu Configuration"
 msgstr ""
 
 #. module: dcs_menu_management
-#: model:ir.module.category,name:dcs_menu_management.module_category_menu_management
 #: model:ir.ui.menu,name:dcs_menu_management.menu_dcs_menu_management_root
+#: model:res.groups.privilege,name:dcs_menu_management.res_groups_privilege_menu_management
 msgid "Menu Management"
 msgstr ""
 
@@ -726,6 +753,11 @@ msgstr ""
 #. module: dcs_menu_management
 #: model:ir.model,name:dcs_menu_management.model_dcs_menu_personal_wizard_line
 msgid "My Menus Line"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:res.groups.privilege,placeholder:dcs_menu_management.res_groups_privilege_menu_management
+msgid "No"
 msgstr ""
 
 #. module: dcs_menu_management

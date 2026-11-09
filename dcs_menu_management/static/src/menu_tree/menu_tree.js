@@ -2,12 +2,12 @@
 // Copyright 2026 DevsCodeSpace (https://devscodespace.com)
 // License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0).
 
-import { Component, onWillStart, useState } from "@odoo/owl";
+import { Component, onWillStart, proxy, useProps } from "@odoo/owl";
 import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
-import { standardActionServiceProps } from "@web/webclient/actions/action_service";
+import { standardActionServiceProps } from "@web/webclient/actions/action_plugin";
 
 const FILTERS = [
     ["all", _t("All menus")],
@@ -29,14 +29,14 @@ function ruleIsActive(rule) {
 export class DcsMenuTree extends Component {
     static template = "dcs_menu_management.MenuTree";
     static components = { Layout };
-    static props = { ...standardActionServiceProps };
+    props = useProps(standardActionServiceProps);
 
     setup() {
         this.orm = useService("orm");
         this.action = useService("action");
         this.notification = useService("notification");
         this.filters = FILTERS;
-        this.state = useState({
+        this.state = proxy({
             loading: true,
             nodes: {},
             roots: [],
@@ -235,44 +235,44 @@ export class DcsMenuTree extends Component {
         const rule = node.rule;
         const badges = [];
         if (rule && rule.count > 0 && !rule.active) {
-            badges.push({ cls: "text-bg-secondary", icon: "fa-archive", label: _t("Rule archived"), title: rule.summary });
+            badges.push({ cls: "text-bg-secondary", icon: "archive", label: _t("Rule archived"), title: rule.summary });
             return badges;
         }
         if (!ruleIsActive(rule)) {
             return badges;
         }
         if (rule.hide_globally) {
-            badges.push({ cls: "text-bg-danger", icon: "fa-eye-slash", label: _t("Hidden for everyone"), title: rule.summary });
+            badges.push({ cls: "text-bg-danger", icon: "visibility_off", label: _t("Hidden for everyone"), title: rule.summary });
         }
         if (rule.hide_users || rule.show_users) {
             const parts = [];
             if (rule.show_users) parts.push(_t("only %s", rule.show_users));
             if (rule.hide_users) parts.push(_t("−%s", rule.hide_users));
-            badges.push({ cls: "text-bg-warning", icon: "fa-user", label: parts.join(" "), title: rule.summary });
+            badges.push({ cls: "text-bg-warning", icon: "person", label: parts.join(" "), title: rule.summary });
         }
         if (rule.hide_companies || rule.show_companies) {
             const parts = [];
             if (rule.show_companies) parts.push(_t("only %s", rule.show_companies));
             if (rule.hide_companies) parts.push(_t("−%s", rule.hide_companies));
-            badges.push({ cls: "text-bg-info", icon: "fa-building", label: parts.join(" "), title: rule.summary });
+            badges.push({ cls: "text-bg-info", icon: "business", label: parts.join(" "), title: rule.summary });
         }
         if (rule.hide_groups || rule.show_groups) {
             const parts = [];
             if (rule.show_groups) parts.push(_t("only %s", rule.show_groups));
             if (rule.hide_groups) parts.push(_t("−%s", rule.hide_groups));
-            badges.push({ cls: "text-bg-primary", icon: "fa-users", label: parts.join(" "), title: rule.summary });
+            badges.push({ cls: "text-bg-primary", icon: "group", label: parts.join(" "), title: rule.summary });
         }
         return badges;
     }
 
     nodeIcon(row) {
         if (row.depth === 0) {
-            return "fa-th-large";
+            return "apps";
         }
         if (row.hasChildren) {
-            return row.expanded ? "fa-folder-open-o" : "fa-folder-o";
+            return row.expanded ? "folder_open" : "folder";
         }
-        return row.node.action ? "fa-file-text-o" : "fa-file-o";
+        return row.node.action ? "description" : "article";
     }
 
     // ------------------------------------------------------------------

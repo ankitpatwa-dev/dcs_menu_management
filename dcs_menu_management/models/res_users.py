@@ -20,17 +20,16 @@ class ResUsers(models.Model):
              'preferences. Only menu administrators can change this option.')
     dcs_personal_hidden_menu_ids = fields.Many2many(
         'ir.ui.menu', 'dcs_user_personal_hidden_menu_rel', 'user_id', 'menu_id',
-        string='My Hidden Menus',
+        string='My Hidden Menus', user_writeable=True,
         help='Menus hidden for this user only. Remove a menu from the list to '
              'show it again (reload the page to apply).')
 
-    @property
-    def SELF_READABLE_FIELDS(self):
-        return super().SELF_READABLE_FIELDS + [ALLOW_FIELD, PERSONAL_FIELD]
-
-    @property
-    def SELF_WRITEABLE_FIELDS(self):
-        return super().SELF_WRITEABLE_FIELDS + [PERSONAL_FIELD]
+    # Odoo 20: users update their own record through the standard
+    # "self user write access" rule. Only the personal list is user_writeable;
+    # write() below additionally requires the permission, the user's own
+    # record and safe many2many commands. The permission flag itself is not
+    # user_writeable (Access Rights administrators only) and write() limits it
+    # to menu administrators.
 
     # ------------------------------------------------------------------
     def _dcs_is_menu_manager(self):
@@ -79,7 +78,7 @@ class ResUsers(models.Model):
         self._dcs_check_menu_values(vals)
         res = super().write(vals)
         if ALLOW_FIELD in vals or PERSONAL_FIELD in vals:
-            self.env.registry.clear_cache()
+            self.env.transaction.invalidate_ormcache('default')
         return res
 
     # ------------------------------------------------------------------

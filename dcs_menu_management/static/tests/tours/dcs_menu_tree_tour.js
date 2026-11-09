@@ -49,7 +49,7 @@ registry.category("web_tour.tours").add("dcs_menu_management_tree", {
         },
         {
             content: "Restrict users",
-            trigger: ".modal .o_notebook a:contains(Users)",
+            trigger: ".modal .o_notebook .nav-link[name='users']",
             run: "click",
         },
         {
@@ -68,7 +68,7 @@ registry.category("web_tour.tours").add("dcs_menu_management_tree", {
         },
         {
             content: "Dialog closed, tree reloaded with the user badge",
-            trigger: `body:not(:has(.modal)) ${row("Partners A")} .badge .fa-user`,
+            trigger: `body:not(:has(.modal)) ${row("Partners A")} .badge [data-icon=person]`,
         },
         {
             content: "Clear the search",
@@ -109,7 +109,7 @@ registry.category("web_tour.tours").add("dcs_menu_management_my_menus", {
     steps: () => [
         {
             content: "Open the user menu",
-            trigger: ".o_user_menu button",
+            trigger: "button.o_user_menu",
             run: "click",
         },
         {
@@ -126,6 +126,7 @@ registry.category("web_tour.tours").add("dcs_menu_management_my_menus", {
             content: "Save and reload",
             trigger: ".modal button[name='action_apply']",
             run: "click",
+            expectUnloadPage: true,
         },
         {
             content: "Page reloaded without the dialog",

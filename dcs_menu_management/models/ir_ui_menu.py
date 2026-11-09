@@ -210,7 +210,7 @@ class IrUiMenu(models.Model):
     # Cached, user-independent data
     # ------------------------------------------------------------------
     @api.model
-    @tools.ormcache()
+    @api.ormcache()
     def _dcs_menu_structure(self):
         """{menu_id: (parent_id, has_action)} for all active menus.
 
@@ -234,7 +234,7 @@ class IrUiMenu(models.Model):
         }
 
     @api.model
-    @tools.ormcache()
+    @api.ormcache()
     def _dcs_children_map(self):
         children = defaultdict(list)
         for menu_id, (parent_id, _has_action) in self._dcs_menu_structure().items():
@@ -243,7 +243,7 @@ class IrUiMenu(models.Model):
         return {key: tuple(value) for key, value in children.items()}
 
     @api.model
-    @tools.ormcache()
+    @api.ormcache()
     def _dcs_protected_menu_ids(self):
         """Menus that menu administrators always keep: Settings and this
         module's own menus (with their ancestors)."""
@@ -264,7 +264,7 @@ class IrUiMenu(models.Model):
         return frozenset(ids)
 
     @api.model
-    @tools.ormcache()
+    @api.ormcache()
     def _dcs_rules_snapshot_cached(self):
         """Tuple of active rules as plain tuples (menu_id, hide_globally,
         hide_users, show_users, hide_companies, show_companies, show_groups,
@@ -424,7 +424,7 @@ class IrUiMenu(models.Model):
         return frozenset(visible), reasons
 
     @api.model
-    @tools.ormcache('self.env.uid', 'frozenset(self.env.user._get_group_ids())',
+    @api.ormcache('self.env.uid', 'frozenset(self.env.user._get_group_ids())',
                     'debug', 'company_key', 'skip_personal')
     def _dcs_visible_menu_ids_cached(self, debug, company_key, skip_personal):
         company_ids = None if company_key is None else frozenset(company_key)
@@ -509,7 +509,7 @@ class IrUiMenu(models.Model):
         self._dcs_check_manager()
         Menu = self.with_context(active_test=False, **FULL_LIST_CTX)
         menus = Menu.search_fetch([], ['name', 'parent_id', 'sequence', 'action',
-                                       'active', 'groups_id', 'web_icon'])
+                                       'active', 'group_ids', 'web_icon'])
         xmlids = menus._get_menuitems_xmlids()
         actions = menus._dcs_action_labels()
         rules = self.env['dcs.menu.rule'].with_context(active_test=False).search(
@@ -522,7 +522,7 @@ class IrUiMenu(models.Model):
         for user in users:
             for menu_id in user.dcs_personal_hidden_menu_ids.ids:
                 personal_counts[menu_id] += 1
-        group_names = {g.id: g.full_name for g in menus.groups_id}
+        group_names = {g.id: g.full_name for g in menus.group_ids}
         protected = self._dcs_protected_menu_ids()
 
         preview = None
@@ -554,7 +554,7 @@ class IrUiMenu(models.Model):
                 'active': menu.active,
                 'xmlid': xmlids.get(menu.id, ''),
                 'action': actions.get(menu.id) or '',
-                'groups': [group_names[g] for g in menu.groups_id.ids if g in group_names],
+                'groups': [group_names[g] for g in menu.group_ids.ids if g in group_names],
                 'protected': menu.id in protected,
                 'personal_count': personal_counts.get(menu.id, 0),
                 'rule': rule and {

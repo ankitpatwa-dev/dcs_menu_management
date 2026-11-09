@@ -40,7 +40,7 @@ class DcsMenuRule(models.Model):
         string='Menu Active', related='menu_id.active')
     menu_group_ids = fields.Many2many(
         'res.groups', string='Odoo Standard Groups',
-        related='menu_id.groups_id', readonly=True,
+        related='menu_id.group_ids', readonly=True,
         help='Groups defined on the menu by Odoo or by the module that '
              'created it. This module never changes them.')
 
@@ -93,11 +93,11 @@ class DcsMenuRule(models.Model):
         compute='_compute_personal_user_ids',
         help='Users who hid this menu through their own preferences.')
 
-    _sql_constraints = [
-        ('menu_unique', 'unique(menu_id)',
-         'A visibility rule already exists for this menu. Edit or unarchive '
-         'the existing rule instead.'),
-    ]
+    _menu_unique = models.Constraint(
+        'unique(menu_id)',
+        'A visibility rule already exists for this menu. Edit or unarchive '
+        'the existing rule instead.',
+    )
 
     # ------------------------------------------------------------------
     # Computes
@@ -197,19 +197,19 @@ class DcsMenuRule(models.Model):
     def create(self, vals_list):
         self._dcs_check_manager()
         rules = super().create(vals_list)
-        self.env.registry.clear_cache()
+        self.env.transaction.invalidate_ormcache('default')
         return rules
 
     def write(self, vals):
         self._dcs_check_manager()
         res = super().write(vals)
-        self.env.registry.clear_cache()
+        self.env.transaction.invalidate_ormcache('default')
         return res
 
     def unlink(self):
         self._dcs_check_manager()
         res = super().unlink()
-        self.env.registry.clear_cache()
+        self.env.transaction.invalidate_ormcache('default')
         return res
 
     def copy(self, default=None):

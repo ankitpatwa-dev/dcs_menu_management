@@ -42,7 +42,7 @@
                         change what you are allowed to do in Odoo.
                     </p>
                     <button name="action_dcs_open_personal_menus" type="object" string="Choose Menus to Hide"
-                            icon="fa-list-ul" class="btn-primary mb-3"/>
+                            icon="checklist" class="btn-primary mb-3"/>
                     <group>
                         <field name="dcs_personal_hidden_menu_ids" widget="many2many_tags" readonly="0"
                                string="Hidden Menus" options="{'no_create': True}"
@@ -67,7 +67,7 @@
                 <field name="dcs_allow_menu_preferences" widget="boolean_toggle"/>
                 <field name="dcs_personal_hidden_menu_ids" widget="many2many_tags" readonly="1"
                        context="{'ir.ui.menu.full_list': True}"/>
-                <button name="action_dcs_reset_personal_menus" type="object" icon="fa-undo"
+                <button name="action_dcs_reset_personal_menus" type="object" icon="undo"
                         title="Reset personal menus" invisible="not dcs_personal_hidden_menu_ids"/>
             </list>
         </field>

@@ -2,7 +2,7 @@
 Advanced Menu Management
 ========================
 
-Odoo 18.0 · Community and Enterprise · LGPL-3 · by DevsCodeSpace (https://devscodespace.com)
+Odoo 20.0 · Community and Enterprise · LGPL-3 · by DevsCodeSpace (https://devscodespace.com)
 
 Decide who sees which Odoo menu without editing XML, Python or security groups. The module
 only narrows Odoo's standard menu visibility: it never shows a menu, an action or a record
@@ -57,7 +57,7 @@ Administrators switch on **Hide Menus Through Preferences** for selected users
 (Settings › Menu Management › Personal Preferences, or the user form › *Menu Visibility*).
 
 Those users open their avatar menu › **My Menus**, switch on the menus to hide and click
-**Save and Reload**. They can bring menus back the same way or from Preferences › *My Menus*.
+**Save and Reload**. They can bring menus back the same way or from *My Preferences* › *My Menus*.
 Personal choices only affect that user.
 
 How visibility is decided

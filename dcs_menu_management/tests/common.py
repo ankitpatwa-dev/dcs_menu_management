@@ -41,7 +41,7 @@ class DcsMenuCase(TransactionCase):
         cls.user_grp = new_test_user(
             cls.env, login='dcs_user_grp', name='DCS Grouped User',
             groups='base.group_user', company_id=cls.main_company.id)
-        cls.user_grp.groups_id = [Command.link(cls.group_test.id)]
+        cls.user_grp.group_ids = [Command.link(cls.group_test.id)]
         cls.manager = new_test_user(
             cls.env, login='dcs_manager', name='DCS Menu Manager',
             groups='base.group_user,base.group_erp_manager,dcs_menu_management.group_menu_manager',
@@ -71,7 +71,7 @@ class DcsMenuCase(TransactionCase):
                                           'action': ref(act_param), 'sequence': 3})
         cls.admin_app = cls.Menu.create({
             'name': 'DCS Admin App', 'sequence': 2,
-            'groups_id': [Command.set([cls.env.ref('base.group_system').id])]})
+            'group_ids': [Command.set([cls.env.ref('base.group_system').id])]})
         cls.admin_item = cls.Menu.create({'name': 'Admin Item', 'parent_id': cls.admin_app.id,
                                           'action': ref(act_partner)})
         cls.test_menus = (cls.app | cls.section | cls.item_a | cls.item_b | cls.item_direct

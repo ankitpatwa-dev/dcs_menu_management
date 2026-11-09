@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="alert alert-info" role="status" invisible="not is_protected">
-                        <i class="fa fa-shield me-1" title="Protected"/>
+                        <i class="oi me-1" data-icon="security" title="Protected"/>
                         This menu leads to Settings or Menu Management. Restrictions do not apply to menu
                         administrators, so they can always undo a configuration.
                     </div>
@@ -134,7 +134,7 @@
                         domain="['|', ('hide_group_ids', '!=', False), ('show_group_ids', '!=', False)]"/>
                 <separator/>
                 <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
-                <group expand="0" string="Group By">
+                <group>
                     <filter name="group_changed_by" string="Changed By" context="{'group_by': 'write_uid'}"/>
                 </group>
             </search>

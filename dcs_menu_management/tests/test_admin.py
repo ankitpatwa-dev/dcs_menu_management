@@ -3,7 +3,7 @@
 
 from odoo import Command
 from odoo.exceptions import AccessError, ValidationError
-from odoo.tests import tagged
+from odoo.tests import new_test_user, tagged
 from odoo.tools import mute_logger
 
 from .common import DcsMenuCase
@@ -44,19 +44,35 @@ class TestMenuAdministration(DcsMenuCase):
                       show_company_ids=[Command.set(self.company_a.ids)])
         portal = self.env['res.users'].create({
             'name': 'Portal', 'login': 'dcs_portal',
-            'groups_id': [Command.set([self.env.ref('base.group_portal').id])]})
-        with self.assertRaises(ValidationError):
-            self.rule(self.item_a, hide_user_ids=[Command.set(portal.ids)])
+            'group_ids': [Command.set([self.env.ref('base.group_portal').id])]})
+        # Odoo 20 already refuses to link records outside the field domain
+        # (ValueError); the module's own constraint raises ValidationError.
+        try:
+            with self.env.cr.savepoint():
+                self.rule(self.item_a, hide_user_ids=[Command.set(portal.ids)])
+        except (ValueError, ValidationError):
+            pass
+        else:
+            self.fail('A portal user was accepted in a menu rule.')
 
     def test_04_company_isolation_of_configuration(self):
-        restricted_manager = self.manager.copy({
-            'login': 'dcs_manager_main_only',
-            'company_id': self.main_company.id,
-            'company_ids': [Command.set(self.main_company.ids)]})
-        with self.assertRaises(ValidationError):
-            self.Rule.with_user(restricted_manager).create({
-                'menu_id': self.item_a.id,
-                'show_company_ids': [Command.set(self.company_b.ids)]})
+        restricted_manager = new_test_user(
+            self.env, login='dcs_manager_main_only',
+            groups='base.group_user,dcs_menu_management.group_menu_manager',
+            company_id=self.main_company.id,
+            company_ids=[Command.set(self.main_company.ids)])
+        self.assertEqual(restricted_manager.company_ids, self.main_company)
+        # Odoo 19 already refuses to link a company the user cannot access
+        # (AccessError); the module's own check raises ValidationError.
+        try:
+            with self.env.cr.savepoint():
+                self.Rule.with_user(restricted_manager).create({
+                    'menu_id': self.item_a.id,
+                    'show_company_ids': [Command.set(self.company_b.ids)]})
+        except (AccessError, ValidationError):
+            pass
+        else:
+            self.fail('A company outside the user\'s companies was accepted in a rule.')
 
     def test_05_configure_action_reuses_rule(self):
         menu = self.item_a.with_user(self.manager)

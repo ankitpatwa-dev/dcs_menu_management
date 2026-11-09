@@ -1,6 +1,6 @@
 # Advanced Menu Management (`dcs_menu_management`)
 
-Odoo 18.0 · Community and Enterprise · LGPL-3 · by [DevsCodeSpace](https://devscodespace.com)
+Odoo 20.0 · Community and Enterprise · LGPL-3 · by [DevsCodeSpace](https://devscodespace.com)
 
 Decide who sees which Odoo menu without editing XML, Python or security groups. Hide menus
 for everyone, for some users, companies or security groups, and let selected users hide the
@@ -45,7 +45,7 @@ shows a menu, an action or a record to someone Odoo would not show it to.
 
 ## Installation
 
-Requirements: Odoo 18.0 (Community or Enterprise). Dependencies: only the standard `web`
+Requirements: Odoo 20.0 (Community or Enterprise). Dependencies: only the standard `web`
 module. No Python or JavaScript library to install.
 
 1. Copy the `dcs_menu_management` folder into one of your addons paths
@@ -152,7 +152,7 @@ For users who have the **Hide Menus Through Preferences** permission:
 3. Click **Save and Reload**.
 
 To bring menus back, open **My Menus** again and switch them off, or click **Show All**.
-You can also open **Preferences › My Menus** and remove menus from *Hidden Menus*, then
+You can also open **My Preferences › My Menus** and remove menus from *Hidden Menus*, then
 reload the page.
 
 Your choices only change your own menu bar. They do not change what you are allowed to do,
@@ -196,8 +196,8 @@ Consequences:
 * **Configuration**: `dcs.menu.rule` is only accessible to Settings administrators and Menu
   Managers (model access rights), and its create/write/unlink also check the group in code.
   Menu managers never get write access to `ir.ui.menu`, so they cannot change menu groups.
-* **Personal preferences**: the hidden menus field is self-writable through Odoo's
-  `SELF_WRITEABLE_FIELDS` mechanism, with extra server-side checks: only for the user
+* **Personal preferences**: the hidden menus field is self-writable (`user_writeable=True`,
+  Odoo 20), with extra server-side checks: only for the user
   themself, only with the permission, and only *link/unlink/clear/set* commands (a user
   cannot create, rename or delete menus through it). The permission itself can only be
   changed by menu administrators. Writing another user's preferences requires being a
@@ -224,9 +224,10 @@ dcs_menu_management/
 │   │                        companies, groups; manager checks; cache invalidation
 │   ├── ir_ui_menu.py        visibility engine (inherits ir.ui.menu), admin API for the tree
 │   ├── res_users.py         permission + personal hidden menus, self-write guards
-│   └── ir_http.py           session flag, company-aware menu hash, bootstrap menu data
+│   └── ir_http.py           session flag for the "My Menus" entry
 ├── wizard/                  dcs.menu.personal.wizard (My Menus)
-├── security/                Menu Manager group, ACLs, wizard record rules
+├── security/                Menu Manager group (res.groups.privilege), ir.access.csv
+│                            (model access + own-records domains for the wizard)
 ├── views/                   rule views, ir.ui.menu list/form/search, user views, menus
 ├── data/                    client action (Menu Configuration, path /odoo/menu-management)
 ├── demo/                    demo user allowed to hide menus, archived example rule
@@ -237,8 +238,10 @@ dcs_menu_management/
 ```
 
 **Engine.** Odoo computes menu visibility in `ir.ui.menu._visible_menu_ids()` (cached per
-set of groups) and every entry point uses it: `search()` on menus, `get_user_roots()`,
-`load_menus()` (menu bar, home screen, command palette) and `load_menus_root()`. The module
+set of groups) and every menu entry point uses it through `_filter_visible_menus()`:
+`get_user_roots()`, `load_menus()` (menu bar, home screen, command palette) and
+`load_menus_root()`. (Since Odoo 19 a plain `search()` on `ir.ui.menu` is no longer filtered by
+visibility; this is standard Odoo behaviour.) The module
 overrides `_visible_menu_ids()`: it takes Odoo's result and removes the menus hidden by
 rules, their descendants and the sections left empty. The result is cached with
 `tools.ormcache` per user, set of groups, debug mode, active companies and personal flag.
@@ -247,10 +250,10 @@ rules, their descendants and the sections left empty. The result is cached with
 example `website` with `load_menus_root()`) add their own per-user caches anywhere in the
 inheritance chain. These methods are therefore always computed with company rules
 evaluated against *all* the user's companies, which is stable per user. The exact active
-companies are applied afterwards by the uncached entry points of the web client:
-`load_web_menus()` (the `/web/webclient/load_menus` request), the menu hash in
-`session_info()` (the browser caches menus by that hash, so it now changes with the active
-companies) and `webclient_rendering_context()`. Active companies come from the context
+companies are applied afterwards by the uncached entry point of the web client,
+`load_web_menus()` (the `/web/webclient/load_menus` request). Odoo 20 fetches that request
+with `no-store` on every page load and refreshes its local copy, so a company switch or a
+rule change shows on the next reload. Active companies come from the context
 (`allowed_company_ids`), otherwise from the `cids` cookie set by the company switcher,
 otherwise the user's current company; companies the user is not allowed in are ignored.
 
@@ -265,16 +268,16 @@ module leaves `ir_ui_menu` untouched. Deleting a menu deletes its rule (`ondelet
 
 ## Performance
 
-Measured on Odoo 18.0 Community, Python 3.13, PostgreSQL 16, 2 CPUs:
+Measured on Odoo 20.0 Community, Python 3.13, PostgreSQL 16, 2 CPUs:
 
 | Database | Cold menu load (`load_web_menus`) | Warm (cached) |
 |---|---|---|
-| 13 apps, 489 menus, no rule | 81 ms, 56 queries | 2.2 ms, 0 queries |
-| 13 apps, 489 menus, 200 rules | 97 ms, 40 queries | 2.2 ms, 0 queries |
-| 3,550 menus, 1,000 rules hiding menus | 346 ms (Odoo alone: 328 ms) | 15 ms (Odoo alone: 26 ms) |
+| 13 apps, 488 menus, no rule | 67 ms, 32 queries | 0.5 ms, 0 queries |
+| 13 apps, 488 menus, 200 rules | 63 ms, 32 queries | 0.5 ms, 0 queries |
+| 3,549 menus, 1,000 rules hiding menus | 165–444 ms | 1.5 ms |
 
 Evaluation is one pass over cached tuples; no ORM query per menu or per rule. The
-Menu Configuration tree loads all menus in one call (190 ms for 3,550 menus) and only
+Menu Configuration tree loads all menus in one call (167 ms for 3,549 menus) and only
 renders expanded branches.
 
 ## Testing
@@ -296,7 +299,7 @@ odoo-bin -c odoo.conf -d <test-db> -i dcs_menu_management \
 * administration: manager-only configuration (ORM and RPC), one rule per menu,
   contradictions, company isolation, status search, external ID search, tree data, preview
   reasons equal to the real result, cache invalidation, zero queries once cached;
-* HTTP: menus follow the `cids` cookie, menu hash changes with rules and companies,
+* HTTP: menus follow the `cids` cookie, rule changes reach the next menu request,
   session flag, client context cannot lift a rule;
 * tours: Menu Configuration (search, hide, configure, preview, restore) and My Menus.
 
@@ -324,7 +327,7 @@ Odoo as warnings (`Only menu administrators can ...`).
   evaluated against all the user's companies instead of only the active ones. All other
   rules apply normally, and the backend menu bar always follows the active companies.
 * Changes apply at the next page load of each user (as for any Odoo menu change).
-* Verified on Odoo 18.0 Community. The module only uses Community APIs and has no
+* Verified on Odoo 20.0 Community. The module only uses Community APIs and has no
   Enterprise dependency, but it has not been run on an Enterprise database by us.
 
 ## Support and license
@@ -335,4 +338,15 @@ License: GNU Lesser General Public License v3.0 (see `LICENSE`).
 
 ### Changelog
 
-* **18.0.1.0.0**: first release.
+* **20.0.1.0.0**: first release for Odoo 20 (port of 19.0.1.0.0).
+
+### Odoo 20 notes
+
+* Access rights use Odoo 20's `security/ir.access.csv` (model access and record domains in one file).
+* The personal hidden-menus field is declared `user_writeable=True` (Odoo 20's replacement for
+  `SELF_WRITEABLE_FIELDS`); the module's `write()` still checks permission, own record and safe commands.
+* Icons use Odoo 20's Material Symbols (`<i class="oi" data-icon="..."/>`); the OWL client action uses OWL 3
+  (`proxy`, `useProps`).
+* Caches are invalidated with `env.transaction.invalidate_ormcache('default')`.
+* Odoo 20 itself refuses contexts with unauthorised companies and links outside a field's domain; tests accept
+  those stricter errors.

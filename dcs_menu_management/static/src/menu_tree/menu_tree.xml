@@ -4,14 +4,14 @@
     <t t-name="dcs_menu_management.MenuTree">
         <div class="o_action o_dcs_menu_tree">
             <Layout display="{ controlPanel: {} }">
-                <t t-set-slot="control-panel-always-buttons">
-                    <button type="button" class="btn btn-secondary" t-on-click="openList"
+                <t t-set-slot="control-panel-buttons">
+                    <button type="button" class="btn btn-secondary" t-on-click="this.openList"
                             title="List of all menus with filters and grouping">
-                        <i class="fa fa-list me-1"/>List View
+                        <i class="oi me-1" data-icon="format_list_bulleted"/>List View
                     </button>
-                    <button type="button" class="btn btn-secondary" t-on-click="openRules"
+                    <button type="button" class="btn btn-secondary" t-on-click="this.openRules"
                             title="All configured visibility rules">
-                        <i class="fa fa-sliders me-1"/>Rules
+                        <i class="oi me-1" data-icon="tune"/>Rules
                     </button>
                 </t>
             <div class="o_dcs_body">
@@ -19,49 +19,49 @@
                         <div class="o_dcs_card">
                             <div class="o_dcs_card_title">Overview</div>
                             <dl class="o_dcs_stats">
-                                <div><dt>Menus</dt><dd t-esc="stats.total"/></div>
-                                <div><dt>Restricted</dt><dd t-esc="stats.configured"/></div>
-                                <div><dt>Hidden for all</dt><dd t-esc="stats.hidden"/></div>
+                                <div><dt>Menus</dt><dd t-out="this.stats.total"/></div>
+                                <div><dt>Restricted</dt><dd t-out="this.stats.configured"/></div>
+                                <div><dt>Hidden for all</dt><dd t-out="this.stats.hidden"/></div>
                             </dl>
                         </div>
                         <div class="o_dcs_card o_dcs_preview_card">
                             <div class="o_dcs_card_title">
-                                <i class="fa fa-user-circle-o me-1"/>Preview as user
+                                <i class="oi me-1" data-icon="account_circle"/>Preview as user
                             </div>
                             <p class="text-muted small mb-2">
                                 See exactly which menus a user gets, and why the others are hidden.
                             </p>
                             <select class="form-select form-select-sm o_dcs_preview_user" aria-label="Preview user"
-                                    t-on-change="onPreviewUserChange">
-                                <option value="" t-att-selected="!state.previewUserId">No preview</option>
-                                <t t-foreach="state.users" t-as="u" t-key="u.id">
-                                    <option t-att-value="u.id" t-att-selected="state.previewUserId == u.id"
-                                            t-esc="u.name"/>
+                                    t-on-change="this.onPreviewUserChange">
+                                <option value="" t-att-selected="!this.state.previewUserId">No preview</option>
+                                <t t-foreach="this.state.users" t-as="u" t-key="u.id">
+                                    <option t-att-value="u.id" t-att-selected="this.state.previewUserId == u.id"
+                                            t-out="u.name"/>
                                 </t>
                             </select>
-                            <t t-if="previewUser and previewUserCompanies.length > 1">
+                            <t t-if="this.previewUser and this.previewUserCompanies.length > 1">
                                 <div class="small fw-bold mt-3 mb-1">Active companies</div>
-                                <t t-foreach="previewUserCompanies" t-as="c" t-key="c.id">
+                                <t t-foreach="this.previewUserCompanies" t-as="c" t-key="c.id">
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input"
                                                t-att-id="'dcs_pc_' + c.id"
-                                               t-att-checked="state.previewCompanyIds.includes(c.id)"
+                                               t-att-checked="this.state.previewCompanyIds.includes(c.id)"
                                                t-on-change="(ev) => this.onPreviewCompanyToggle(c.id, ev)"/>
-                                        <label class="form-check-label small" t-att-for="'dcs_pc_' + c.id" t-esc="c.name"/>
+                                        <label class="form-check-label small" t-att-for="'dcs_pc_' + c.id" t-out="c.name"/>
                                     </div>
                                 </t>
                             </t>
-                            <t t-if="state.previewInfo">
+                            <t t-if="this.state.previewInfo">
                                 <div class="o_dcs_preview_summary mt-3">
-                                    <strong t-esc="stats.previewHidden"/> menus hidden for
-                                    <strong t-esc="state.previewInfo.user"/>
-                                    <span class="text-muted"> (<t t-esc="state.previewInfo.companies.join(', ')"/>)</span>
+                                    <strong t-out="this.stats.previewHidden"/> menus hidden for
+                                    <strong t-out="this.state.previewInfo.user"/>
+                                    <span class="text-muted"> (<t t-out="this.state.previewInfo.companies.join(', ')"/>)</span>
                                 </div>
                                 <select class="form-select form-select-sm mt-2 o_dcs_preview_filter"
-                                        aria-label="Preview filter" t-on-change="onPreviewFilterChange">
-                                    <option value="all" t-att-selected="state.previewFilter === 'all'">All menus</option>
-                                    <option value="visible" t-att-selected="state.previewFilter === 'visible'">Visible to this user</option>
-                                    <option value="hidden" t-att-selected="state.previewFilter === 'hidden'">Hidden for this user</option>
+                                        aria-label="Preview filter" t-on-change="this.onPreviewFilterChange">
+                                    <option value="all" t-att-selected="this.state.previewFilter === 'all'">All menus</option>
+                                    <option value="visible" t-att-selected="this.state.previewFilter === 'visible'">Visible to this user</option>
+                                    <option value="hidden" t-att-selected="this.state.previewFilter === 'hidden'">Hidden for this user</option>
                                 </select>
                             </t>
                         </div>
@@ -79,41 +79,41 @@
                     <div class="o_dcs_main">
                         <div class="o_dcs_toolbar d-flex flex-wrap align-items-center gap-2 w-100">
                             <div class="input-group o_dcs_search">
-                                <span class="input-group-text"><i class="fa fa-search" title="Search"/></span>
+                                <span class="input-group-text"><i class="oi" data-icon="search" title="Search"/></span>
                                 <input type="search" class="form-control o_dcs_search_input"
                                        placeholder="Search menu, external ID or action..."
                                        aria-label="Search menus"
-                                       t-att-value="state.search" t-on-input="onSearchInput"/>
+                                       t-att-value="this.state.search" t-on-input="this.onSearchInput"/>
                             </div>
                             <select class="form-select w-auto o_dcs_filter" aria-label="Filter"
-                                    t-on-change="onFilterChange">
-                                <t t-foreach="filters" t-as="f" t-key="f[0]">
-                                    <option t-att-value="f[0]" t-att-selected="state.filter === f[0]" t-esc="f[1]"/>
+                                    t-on-change="this.onFilterChange">
+                                <t t-foreach="this.filters" t-as="f" t-key="f[0]">
+                                    <option t-att-value="f[0]" t-att-selected="this.state.filter === f[0]" t-out="f[1]"/>
                                 </t>
                             </select>
                             <div class="btn-group" role="group" aria-label="Expand and collapse">
-                                <button type="button" class="btn btn-light border" t-on-click="expandApps"
+                                <button type="button" class="btn btn-light border" t-on-click="this.expandApps"
                                         title="Expand applications">
-                                    <i class="fa fa-angle-down"/> Apps
+                                    <i class="oi" data-icon="expand_more"/> Apps
                                 </button>
                                 <button type="button" class="btn btn-light border o_dcs_expand_all"
-                                        t-on-click="expandAll" title="Expand all">
-                                    <i class="fa fa-angle-double-down"/> All
+                                        t-on-click="this.expandAll" title="Expand all">
+                                    <i class="oi" data-icon="keyboard_double_arrow_down"/> All
                                 </button>
-                                <button type="button" class="btn btn-light border" t-on-click="collapseAll"
+                                <button type="button" class="btn btn-light border" t-on-click="this.collapseAll"
                                         title="Collapse all">
-                                    <i class="fa fa-angle-double-up"/>
+                                    <i class="oi" data-icon="keyboard_double_arrow_up"/>
                                 </button>
                             </div>
-                            <button t-if="isFiltering" type="button" class="btn btn-link" t-on-click="clearFilters">
+                            <button t-if="this.isFiltering" type="button" class="btn btn-link" t-on-click="this.clearFilters">
                                 Clear filters
                             </button>
                         </div>
-                        <div t-if="state.loading" class="p-4 text-muted">Loading menus...</div>
+                        <div t-if="this.state.loading" class="p-4 text-muted">Loading menus...</div>
                         <div t-else="" class="o_dcs_tree" role="tree" aria-label="Odoo menus">
-                            <t t-set="rowList" t-value="rows"/>
+                            <t t-set="rowList" t-value="this.rows"/>
                             <div t-if="!rowList.length" class="o_dcs_empty">
-                                <i class="fa fa-search fa-2x mb-2"/>
+                                <i class="oi oi-2x mb-2" data-icon="search"/>
                                 <div>No menu matches these filters.</div>
                             </div>
                             <t t-foreach="rowList" t-as="row" t-key="row.node.id">
@@ -126,68 +126,68 @@
                                      t-att-class="{
                                         'o_dcs_root': row.depth === 0,
                                         'o_dcs_inactive': !node.active,
-                                        'o_dcs_matched': row.matched and state.search.trim(),
+                                        'o_dcs_matched': row.matched and this.state.search.trim(),
                                     'o_dcs_context': row.context,
                                         'o_dcs_preview_hidden': node.preview and !node.preview.visible,
                                      }">
                                     <div class="o_dcs_name_cell" t-attf-style="padding-left: {{ row.depth * 22 + 6 }}px">
                                         <button t-if="row.hasChildren" type="button" class="btn btn-sm o_dcs_caret"
                                                 t-att-title="row.expanded ? 'Collapse' : 'Expand'"
-                                                t-att-disabled="isFiltering"
+                                                t-att-disabled="this.isFiltering"
                                                 t-on-click="() => this.toggle(node.id)">
-                                            <i t-att-class="'fa ' + (row.expanded ? 'fa-caret-down' : 'fa-caret-right')"/>
+                                            <i class="oi" t-att-data-icon="row.expanded ? 'arrow_drop_down' : 'arrow_right'"/>
                                         </button>
                                         <span t-else="" class="o_dcs_caret_spacer"/>
-                                        <i t-att-class="'fa fa-fw o_dcs_node_icon ' + nodeIcon(row)"/>
-                                        <span class="o_dcs_name" t-esc="node.name"
-                                              t-on-click="() => row.hasChildren and !isFiltering and this.toggle(node.id)"/>
+                                        <i class="oi oi-fw o_dcs_node_icon" t-att-data-icon="this.nodeIcon(row)"/>
+                                        <span class="o_dcs_name" t-out="node.name"
+                                              t-on-click="() => row.hasChildren and !this.isFiltering and this.toggle(node.id)"/>
                                         <span t-if="!node.active" class="badge text-bg-light border ms-1">Archived</span>
-                                        <i t-if="node.protected" class="fa fa-shield text-muted ms-1"
+                                        <i t-if="node.protected" class="oi text-muted ms-1" data-icon="security"
                                            title="Protected: always visible to menu administrators"/>
                                         <span t-if="node.inherited" class="o_dcs_inherited ms-1"
                                               title="A parent menu is restricted; its rules also apply here">
-                                            <i class="fa fa-level-up"/>
+                                            <i class="oi" data-icon="subdirectory_arrow_right"/>
                                         </span>
-                                        <span class="o_dcs_xmlid" t-if="node.xmlid" t-esc="node.xmlid"/>
+                                        <span class="o_dcs_xmlid" t-if="node.xmlid" t-out="node.xmlid"/>
                                     </div>
                                     <div class="o_dcs_meta_cell">
                                         <span t-if="node.action" class="o_dcs_action" t-att-title="node.action">
-                                            <i class="fa fa-bolt me-1"/><t t-esc="node.action"/>
+                                            <i class="oi me-1" data-icon="flash_on"/><t t-out="node.action"/>
                                         </span>
                                         <span t-if="node.groups.length" class="badge text-bg-light border o_dcs_odoo_groups"
                                               t-att-title="'Odoo groups: ' + node.groups.join(', ')">
-                                            <i class="fa fa-lock me-1"/><t t-esc="node.groups.length"/>
+                                            <i class="oi me-1" data-icon="lock"/><t t-out="node.groups.length"/>
                                         </span>
                                     </div>
                                     <div class="o_dcs_status_cell">
-                                        <t t-foreach="badgesFor(node)" t-as="badge" t-key="badge_index">
+                                        <t t-foreach="this.badgesFor(node)" t-as="badge" t-key="badge_index">
                                             <span t-att-class="'badge o_dcs_badge ' + badge.cls" t-att-title="badge.title">
-                                                <i t-att-class="'fa me-1 ' + badge.icon"/><t t-esc="badge.label"/>
+                                                <i class="oi me-1" t-att-data-icon="badge.icon"/><t t-out="badge.label"/>
                                             </span>
                                         </t>
                                         <span t-if="node.personal_count" class="badge text-bg-light border o_dcs_badge"
                                               t-att-title="node.personal_count + ' user(s) hid this menu in their preferences'">
-                                            <i class="fa fa-user-secret me-1"/><t t-esc="node.personal_count"/>
+                                            <i class="oi me-1" data-icon="person_remove"/><t t-out="node.personal_count"/>
                                         </span>
                                     </div>
-                                    <div t-if="state.previewInfo and node.preview" class="o_dcs_preview_cell"
+                                    <div t-if="this.state.previewInfo and node.preview" class="o_dcs_preview_cell"
                                          t-att-title="node.preview.reason">
                                         <span t-if="node.preview.visible" class="text-success">
-                                            <i class="fa fa-eye me-1"/>Visible
+                                            <i class="oi me-1" data-icon="visibility"/>Visible
                                         </span>
                                         <span t-else="" class="text-danger">
-                                            <i class="fa fa-eye-slash me-1"/><t t-esc="node.preview.reason"/>
+                                            <i class="oi me-1" data-icon="visibility_off"/><t t-out="node.preview.reason"/>
                                         </span>
                                     </div>
                                     <div class="o_dcs_actions_cell">
                                         <button type="button" class="btn btn-sm btn-light o_dcs_toggle_hidden"
                                                 t-att-title="node.rule and node.rule.active and node.rule.hide_globally ? 'Show again for everyone' : 'Hide for everyone'"
                                                 t-on-click="() => this.toggleHidden(node)">
-                                            <i t-att-class="'fa ' + (node.rule and node.rule.active and node.rule.hide_globally ? 'fa-eye' : 'fa-eye-slash')"/>
+                                            <i class="oi" t-att-data-icon="node.rule and node.rule.active and node.rule.hide_globally ? 'visibility' : 'visibility_off'"/>
                                         </button>
                                         <button type="button" class="btn btn-sm btn-light o_dcs_configure"
                                                 title="Configure visibility" t-on-click="() => this.configure(node)">
-                                            <i class="fa fa-sliders"/>
+                                            <i class="oi" data-icon="tune"/>
                                         </button>
                                     </div>
                                 </div>

@@ -99,12 +99,18 @@ class TestMenuVisibility(DcsMenuCase):
                 self.assertIn(self.app.id, menus.load_menus(False))
                 self.assertIn(self.app.id, menus.load_menus_root()['all_menu_ids'])
 
-    def test_09_unauthorized_company_in_context_ignored(self):
-        """Companies the user is not allowed in are ignored."""
+    def test_09_unauthorized_company_in_context_refused(self):
+        """Odoo 20 refuses a context naming companies the user is not
+        allowed in; the module never turns such a company into visibility.
+        (The cookie path, used by the web client, is covered by the HTTP test.)"""
         self.rule(self.item_a, show_company_ids=[Command.set(self.main_company.ids)])
         menus = self.env['ir.ui.menu'].with_user(self.user_2).with_context(
             allowed_company_ids=self.main_company.ids)
-        self.assertNotIn(self.item_a.id, menus._visible_menu_ids(False))
+        try:
+            ids = menus._visible_menu_ids(False)
+        except AccessError:
+            return
+        self.assertNotIn(self.item_a.id, ids)
 
     def test_10_groups(self):
         self.rule(self.item_a, show_group_ids=[Command.set(self.group_test.ids)])
@@ -117,7 +123,7 @@ class TestMenuVisibility(DcsMenuCase):
     def test_11_group_change_updates_visibility(self):
         self.rule(self.item_a, show_group_ids=[Command.set(self.group_test.ids)])
         self.assertNotIn(self.item_a, self.visible(self.user_1))
-        self.user_1.groups_id = [Command.link(self.group_test.id)]
+        self.user_1.group_ids = [Command.link(self.group_test.id)]
         self.assertIn(self.item_a, self.visible(self.user_1))
 
     def test_12_combined_rules(self):
@@ -128,7 +134,7 @@ class TestMenuVisibility(DcsMenuCase):
                   show_group_ids=[Command.set(self.group_test.ids)])
         self.assertIn(self.item_a, self.visible(self.user_grp, self.main_company))
         self.assertNotIn(self.item_a, self.visible(self.user_1, self.main_company), 'group missing')
-        self.user_1.groups_id = [Command.link(self.group_test.id)]
+        self.user_1.group_ids = [Command.link(self.group_test.id)]
         self.assertIn(self.item_a, self.visible(self.user_1, self.main_company))
         self.assertNotIn(self.item_a, self.visible(self.user_1, self.company_a), 'company not allowed')
         self.assertNotIn(self.item_a, self.visible(self.user_2, self.company_a), 'user not allowed')
@@ -143,9 +149,12 @@ class TestMenuVisibility(DcsMenuCase):
         self.assertIn(self.app, visible)
         # the children are not reachable via the web tree either
         self.assertEqual(self.web_menus(self.user_1), self.app | self.item_direct)
-        # nor via a menu search
-        found = self.env['ir.ui.menu'].with_user(self.user_1).search([('id', 'in', self.test_menus.ids)])
+        # nor via a visibility-filtered menu search (Odoo 19 search() itself is unfiltered)
+        found = self.env['ir.ui.menu'].with_user(self.user_1).search(
+            [('id', 'in', self.test_menus.ids)])._filter_visible_menus()
         self.assertNotIn(self.item_a, found)
+        roots = self.env['ir.ui.menu'].with_user(self.user_1).get_user_roots()
+        self.assertIn(self.app, roots)
 
     def test_14_empty_folders_disappear(self):
         self.rule(self.item_a, hide_globally=True)
@@ -188,7 +197,7 @@ class TestMenuVisibility(DcsMenuCase):
             self.assertIn(own_menu.id, ids)
         erp_manager = self.env['res.users'].create({
             'name': 'Access Rights Only', 'login': 'dcs_erp_only',
-            'groups_id': [Command.set([self.env.ref('base.group_erp_manager').id])]})
+            'group_ids': [Command.set([self.env.ref('base.group_erp_manager').id])]})
         self.assertNotIn(settings.id, Menu.with_user(erp_manager)._visible_menu_ids(False))
 
     def test_18_superuser_unaffected(self):
