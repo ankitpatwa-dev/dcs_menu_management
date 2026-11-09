@@ -10,6 +10,8 @@
               parent="menu_dcs_menu_management_root" action="action_dcs_ir_ui_menu" sequence="20"/>
     <menuitem id="menu_dcs_menu_rules" name="Visibility Rules"
               parent="menu_dcs_menu_management_root" action="action_dcs_menu_rule" sequence="30"/>
-    <menuitem id="menu_dcs_personal_users" name="Personal Preferences"
+    <menuitem id="menu_dcs_menu_order" name="Application Order"
+              parent="menu_dcs_menu_management_root" action="action_dcs_menu_order_global" sequence="35"/>
+    <menuitem id="menu_dcs_personal_users" name="User Menu Settings"
               parent="menu_dcs_menu_management_root" action="action_dcs_personal_users" sequence="40"/>
 </odoo>

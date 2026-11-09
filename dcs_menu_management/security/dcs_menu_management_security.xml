@@ -29,4 +29,50 @@
         <field name="domain_force">[('wizard_id.create_uid', '=', user.id)]</field>
         <field name="groups" eval="[Command.link(ref('base.group_user'))]"/>
     </record>
+    <!-- Application order: users read the global order and their own, and
+         change only their own (the model also requires the permission) -->
+    <record id="rule_dcs_menu_sequence_user_read" model="ir.rule">
+        <field name="name">Application order: read own and global</field>
+        <field name="model_id" ref="model_dcs_menu_sequence"/>
+        <field name="domain_force">['|', ('user_id', '=', user.id), ('user_id', '=', False)]</field>
+        <field name="groups" eval="[Command.link(ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="rule_dcs_menu_sequence_user_write" model="ir.rule">
+        <field name="name">Application order: change own</field>
+        <field name="model_id" ref="model_dcs_menu_sequence"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[Command.link(ref('base.group_user'))]"/>
+        <field name="perm_read" eval="False"/>
+    </record>
+    <record id="rule_dcs_menu_sequence_manager" model="ir.rule">
+        <field name="name">Application order: administrators</field>
+        <field name="model_id" ref="model_dcs_menu_sequence"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[Command.link(ref('base.group_system')), Command.link(ref('group_menu_manager'))]"/>
+    </record>
+
+    <!-- Recent menus are private: every user, administrators included, only sees their own -->
+    <record id="rule_dcs_menu_recent_own" model="ir.rule">
+        <field name="name">Recent menus: own records only</field>
+        <field name="model_id" ref="model_dcs_menu_recent"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+    </record>
+
+    <!-- Order wizard -->
+    <record id="rule_dcs_menu_order_wizard_own" model="ir.rule">
+        <field name="name">Application order wizard: own records</field>
+        <field name="model_id" ref="model_dcs_menu_order_wizard"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[Command.link(ref('base.group_user'))]"/>
+    </record>
+    <record id="rule_dcs_menu_order_wizard_line_own" model="ir.rule">
+        <field name="name">Application order wizard lines: own records</field>
+        <field name="model_id" ref="model_dcs_menu_order_wizard_line"/>
+        <field name="domain_force">[('wizard_id.create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[Command.link(ref('base.group_user'))]"/>
+    </record>
 </odoo>

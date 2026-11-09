@@ -60,6 +60,29 @@ Those users open their avatar menu › **My Menus**, switch on the menus to hide
 **Save and Reload**. They can bring menus back the same way or from Preferences › *My Menus*.
 Personal choices only affect that user.
 
+Application order
+=================
+
+* Everyone: Settings › Menu Management › **Application Order**; drag, then **Save and Reload**.
+* One user: user form › *Menu Management* tab › **Application Order**.
+* Users allowed to customise their menus: *My Menus* › **Reorder My Apps**.
+
+Odoo's own menu sequence is never changed.
+
+Favorite and recent menus
+=========================
+
+Switch on **Favorite Menus** and **Recent Menus** for a user (user form › *Menu Management*, or
+Settings › Menu Management › **User Menu Settings**). The user then has a star (favorites: add
+the current menu, open, remove with ×) and a history icon (last 10 menus opened) in the top bar.
+Only menus the user can open are ever listed. Recent menus are private to each user.
+
+Copy menu settings
+==================
+
+User form › *Menu Management* › **Copy Menu Settings to Other Users**: hidden menus, personal
+hidden menus, favorites, application order and options.
+
 How visibility is decided
 =========================
 
