@@ -6,14 +6,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-09 09:54+0000\n"
-"PO-Revision-Date: 2026-11-09 09:54+0000\n"
+"POT-Creation-Date: 2026-11-09 16:55+0000\n"
+"PO-Revision-Date: 2026-11-09 16:55+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: dcs_menu_management
+#. odoo-python
+#: code:addons/dcs_menu_management/models/dcs_menu_sequence.py:0
+msgid "\"%s\" is already ordered for this scope."
+msgstr ""
 
 #. module: dcs_menu_management
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_rule_view_form
@@ -27,6 +33,11 @@ msgstr ""
 #. odoo-python
 #: code:addons/dcs_menu_management/models/dcs_menu_rule.py:0
 msgid "A menu can only have one visibility rule."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.constraint,message:dcs_menu_management.constraint_dcs_menu_recent_user_menu_unique
+msgid "A menu is listed once per user."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -64,17 +75,21 @@ msgid "Active companies"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
+msgid "Add favorite menus..."
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-javascript
+#: code:addons/dcs_menu_management/static/src/shortcuts/shortcuts_systray.xml:0
+msgid "Add “"
+msgstr ""
+
+#. module: dcs_menu_management
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_rule_view_form
 msgid ""
 "Added on top of the menu's own Odoo groups shown above, which are never "
 "changed."
-msgstr ""
-
-#. module: dcs_menu_management
-#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
-msgid ""
-"Administrator restrictions are configured per menu in\n"
-"                        Settings / Menu Management / Menu Configuration."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -111,8 +126,8 @@ msgstr ""
 #. module: dcs_menu_management
 #: model:ir.model.fields,help:dcs_menu_management.field_res_users__dcs_allow_menu_preferences
 msgid ""
-"Allow this user to hide menus they do not use from their own preferences. "
-"Only menu administrators can change this option."
+"Allow this user to hide the menus they do not use and to reorder their "
+"applications. Only menu administrators can change this option."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -129,11 +144,42 @@ msgid ""
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard_line__menu_id
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard_line__app_name
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_sequence__menu_id
 msgid "Application"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.actions.act_window,name:dcs_menu_management.action_dcs_menu_order_global
+#: model:ir.model,name:dcs_menu_management.model_dcs_menu_order_wizard
+#: model:ir.model,name:dcs_menu_management.model_dcs_menu_sequence
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_copy_wizard__copy_app_order
+#: model:ir.ui.menu,name:dcs_menu_management.menu_dcs_menu_order
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_order_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
+msgid "Application Order"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model,name:dcs_menu_management.model_dcs_menu_order_wizard_line
+msgid "Application Order Line"
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-python
+#: code:addons/dcs_menu_management/wizard/dcs_menu_order_wizard.py:0
+msgid "Application Order: %s"
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-python
+#: code:addons/dcs_menu_management/wizard/dcs_menu_order_wizard.py:0
+msgid "Application Order: Everyone"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard__line_ids
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_ir_ui_menu_view_search
 msgid "Applications"
 msgstr ""
@@ -187,6 +233,8 @@ msgid ""
 msgstr ""
 
 #. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_copy_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_order_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_personal_wizard_view_form
 msgid "Cancel"
 msgstr ""
@@ -199,7 +247,34 @@ msgstr ""
 
 #. module: dcs_menu_management
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form_simple_modif
+msgid "Changes to these lists apply when you reload the page."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form_simple_modif
 msgid "Choose Menus to Hide"
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-python
+#: code:addons/dcs_menu_management/wizard/dcs_menu_copy_wizard.py:0
+msgid "Choose at least one other user to copy to."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
+msgid "Choose menus to hide for this user..."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_copy_wizard_view_form
+msgid "Choose the users to update..."
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-python
+#: code:addons/dcs_menu_management/wizard/dcs_menu_copy_wizard.py:0
+msgid "Choose what to copy."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -262,27 +337,94 @@ msgid "Configure visibility"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_copy_wizard_view_form
+msgid "Copy"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_copy_wizard__source_user_id
+msgid "Copy From"
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-python
+#: code:addons/dcs_menu_management/models/res_users.py:0
+#: model:ir.model,name:dcs_menu_management.model_dcs_menu_copy_wizard
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_copy_wizard_view_form
+msgid "Copy Menu Settings"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
+msgid "Copy Menu Settings to Other Users"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_copy_wizard__user_ids
+msgid "Copy To"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_copy_wizard__create_uid
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard__create_uid
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard_line__create_uid
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard__create_uid
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard_line__create_uid
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_recent__create_uid
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_rule__create_uid
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_sequence__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_copy_wizard__create_date
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard__create_date
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard_line__create_date
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard__create_date
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard_line__create_date
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_recent__create_date
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_rule__create_date
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_sequence__create_date
 msgid "Created on"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_res_users__dcs_app_order_count
+msgid "Dcs App Order Count"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_copy_wizard__display_name
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard__display_name
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard_line__display_name
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard__display_name
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard_line__display_name
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_recent__display_name
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_rule__display_name
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_sequence__display_name
 #: model:ir.model.fields,field_description:dcs_menu_management.field_ir_http__display_name
 #: model:ir.model.fields,field_description:dcs_menu_management.field_ir_ui_menu__display_name
 #: model:ir.model.fields,field_description:dcs_menu_management.field_res_users__display_name
 msgid "Display Name"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_order_wizard_view_form
+msgid ""
+"Drag the applications into the order everyone should see them in the menu bar and on the home\n"
+"                    screen. Users with a personal order keep theirs. Odoo's own menu sequence is not changed."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_order_wizard_view_form
+msgid ""
+"Drag the applications into the order you want. Only this user's menu bar "
+"changes."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,help:dcs_menu_management.field_dcs_menu_sequence__user_id
+msgid "Empty: order used by everyone who has no personal order."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -308,6 +450,7 @@ msgid "Every user allowed by Odoo"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields.selection,name:dcs_menu_management.selection__dcs_menu_order_wizard__scope__global
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_rule_view_form
 msgid "Everyone"
 msgstr ""
@@ -338,8 +481,46 @@ msgstr ""
 
 #. module: dcs_menu_management
 #. odoo-javascript
+#: code:addons/dcs_menu_management/static/src/shortcuts/shortcuts_systray.xml:0
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_copy_wizard__copy_favorites
+#: model:ir.model.fields,field_description:dcs_menu_management.field_res_users__dcs_show_favorites
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form_simple_modif
+msgid "Favorite Menus"
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-javascript
+#: code:addons/dcs_menu_management/static/src/shortcuts/shortcuts_systray.xml:0
+msgid "Favorite menus"
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-python
+#: code:addons/dcs_menu_management/models/ir_ui_menu.py:0
+#: code:addons/dcs_menu_management/models/res_users.py:0
+msgid "Favorite menus are not enabled for you."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_res_users__dcs_favorite_menu_ids
+msgid "Favorites"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_search_personal
+msgid "Favorites Enabled"
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-javascript
 #: code:addons/dcs_menu_management/static/src/menu_tree/menu_tree.xml:0
 msgid "Filter"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_order_wizard_view_form
+msgid "Go back to the default order?"
 msgstr ""
 
 #. module: dcs_menu_management
@@ -378,6 +559,11 @@ msgid "HTTP Routing"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard__has_custom_order
+msgid "Has Custom Order"
+msgstr ""
+
+#. module: dcs_menu_management
 #: model:ir.model.fields.selection,name:dcs_menu_management.selection__ir_ui_menu__dcs_visibility_state__hidden
 msgid "Hidden"
 msgstr ""
@@ -393,6 +579,9 @@ msgid "Hidden Menu"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_copy_wizard__copy_hidden
+#: model:ir.model.fields,field_description:dcs_menu_management.field_res_users__dcs_hidden_menu_ids
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form_simple_modif
 msgid "Hidden Menus"
 msgstr ""
@@ -462,6 +651,13 @@ msgid "Hidden for this user"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_copy_wizard_view_form
+msgid ""
+"Hidden menus are added to the target users (their existing ones are kept). Personal hidden\n"
+"                    menus, favorites and application order replace the target users' current ones."
+msgstr ""
+
+#. module: dcs_menu_management
 #. odoo-javascript
 #: code:addons/dcs_menu_management/static/src/menu_tree/menu_tree.js:0
 msgid "Hidden personally"
@@ -475,6 +671,12 @@ msgstr ""
 #. module: dcs_menu_management
 #: model:ir.model.fields,field_description:dcs_menu_management.field_res_users__dcs_allow_menu_preferences
 msgid "Hide Menus Through Preferences"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,help:dcs_menu_management.field_dcs_menu_copy_wizard__copy_options
+msgid ""
+"Hide Menus Through Preferences, Favorite Menus and Recent Menus switches."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -504,13 +706,6 @@ msgid "Hide for everyone"
 msgstr ""
 
 #. module: dcs_menu_management
-#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form_simple_modif
-msgid ""
-"Hide the menus you do not use. This only changes your own menu bar; it does not\n"
-"                        change what you are allowed to do in Odoo."
-msgstr ""
-
-#. module: dcs_menu_management
 #: model:ir.model.fields,help:dcs_menu_management.field_dcs_menu_rule__hide_globally
 msgid "Hide this menu and its sub-menus for every user."
 msgstr ""
@@ -533,9 +728,14 @@ msgid "How rules combine"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_copy_wizard__id
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard__id
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard_line__id
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard__id
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard_line__id
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_recent__id
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_rule__id
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_sequence__id
 #: model:ir.model.fields,field_description:dcs_menu_management.field_ir_http__id
 #: model:ir.model.fields,field_description:dcs_menu_management.field_ir_ui_menu__id
 #: model:ir.model.fields,field_description:dcs_menu_management.field_res_users__id
@@ -558,16 +758,26 @@ msgid "Last Change"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_copy_wizard__write_uid
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard__write_uid
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard_line__write_uid
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard__write_uid
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard_line__write_uid
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_recent__write_uid
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_rule__write_uid
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_sequence__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_copy_wizard__write_date
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard__write_date
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard_line__write_date
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard__write_date
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard_line__write_date
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_recent__write_date
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_rule__write_date
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_sequence__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -602,6 +812,7 @@ msgstr ""
 #. module: dcs_menu_management
 #: model:ir.model,name:dcs_menu_management.model_ir_ui_menu
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard_line__menu_id
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_recent__menu_id
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_rule__menu_id
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_ir_ui_menu_view_form
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_ir_ui_menu_view_list
@@ -633,6 +844,7 @@ msgstr ""
 #. module: dcs_menu_management
 #: model:ir.ui.menu,name:dcs_menu_management.menu_dcs_menu_management_root
 #: model:res.groups.privilege,name:dcs_menu_management.res_groups_privilege_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
 msgid "Menu Management"
 msgstr ""
 
@@ -645,11 +857,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard_line__menu_path
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_rule__menu_complete_name
 msgid "Menu Path"
-msgstr ""
-
-#. module: dcs_menu_management
-#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
-msgid "Menu Visibility"
 msgstr ""
 
 #. module: dcs_menu_management
@@ -671,6 +878,12 @@ msgid "Menu archived"
 msgstr ""
 
 #. module: dcs_menu_management
+#. odoo-python
+#: code:addons/dcs_menu_management/models/res_users.py:0
+msgid "Menu lists can only add or remove menus."
+msgstr ""
+
+#. module: dcs_menu_management
 #: model:ir.model.fields,help:dcs_menu_management.field_dcs_menu_rule__menu_id
 msgid ""
 "Menu restricted by this rule. Restrictions also apply to all of its sub-"
@@ -686,6 +899,12 @@ msgid ""
 msgstr ""
 
 #. module: dcs_menu_management
+#. odoo-python
+#: code:addons/dcs_menu_management/wizard/dcs_menu_copy_wizard.py:0
+msgid "Menu settings of %(from_user)s copied to %(count)s user(s)."
+msgstr ""
+
+#. module: dcs_menu_management
 #. odoo-javascript
 #: code:addons/dcs_menu_management/static/src/menu_tree/menu_tree.xml:0
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard__line_ids
@@ -695,10 +914,27 @@ msgid "Menus"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields,help:dcs_menu_management.field_dcs_menu_copy_wizard__copy_hidden
+msgid "Menus hidden for the user by administrators."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,help:dcs_menu_management.field_res_users__dcs_hidden_menu_ids
+msgid ""
+"Menus hidden for this user by an administrator. Stored as \"Hide for Users\""
+" on each menu's visibility rule, so it also appears in Menu Configuration."
+msgstr ""
+
+#. module: dcs_menu_management
 #: model:ir.model.fields,help:dcs_menu_management.field_res_users__dcs_personal_hidden_menu_ids
 msgid ""
 "Menus hidden for this user only. Remove a menu from the list to show it "
 "again (reload the page to apply)."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,help:dcs_menu_management.field_dcs_menu_copy_wizard__copy_personal
+msgid "Menus the user hid through their preferences."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -728,6 +964,12 @@ msgid "No company"
 msgstr ""
 
 #. module: dcs_menu_management
+#. odoo-javascript
+#: code:addons/dcs_menu_management/static/src/shortcuts/shortcuts_systray.xml:0
+msgid "No favorite yet. Open a menu, then add it here."
+msgstr ""
+
+#. module: dcs_menu_management
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_rule_view_form
 msgid "No group"
 msgstr ""
@@ -740,6 +982,11 @@ msgstr ""
 #. module: dcs_menu_management
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form_simple_modif
 msgid "No hidden menu"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.actions.act_window,help:dcs_menu_management.action_dcs_personal_users
+msgid "No internal user"
 msgstr ""
 
 #. module: dcs_menu_management
@@ -771,8 +1018,8 @@ msgid "Nobody"
 msgstr ""
 
 #. module: dcs_menu_management
-#: model_terms:ir.actions.act_window,help:dcs_menu_management.action_dcs_personal_users
-msgid "Nobody can hide menus personally yet"
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
+msgid "None"
 msgstr ""
 
 #. module: dcs_menu_management
@@ -832,6 +1079,11 @@ msgid "Odoo's own access decides first; rules never add a menu."
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields.selection,name:dcs_menu_management.selection__dcs_menu_order_wizard__scope__user
+msgid "One User"
+msgstr ""
+
+#. module: dcs_menu_management
 #. odoo-python
 #: code:addons/dcs_menu_management/models/dcs_menu_rule.py:0
 msgid "Only %s company(ies)"
@@ -851,16 +1103,33 @@ msgstr ""
 
 #. module: dcs_menu_management
 #. odoo-python
+#: code:addons/dcs_menu_management/models/dcs_menu_sequence.py:0
+msgid "Only applications (top-level menus) can be ordered."
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-python
 #: code:addons/dcs_menu_management/models/res_users.py:0
-msgid ""
-"Only menu administrators can allow users to hide menus through their "
-"preferences."
+msgid "Only menu administrators can change menu options of users."
 msgstr ""
 
 #. module: dcs_menu_management
 #. odoo-python
 #: code:addons/dcs_menu_management/models/dcs_menu_rule.py:0
 msgid "Only menu administrators can change menu visibility rules."
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-python
+#: code:addons/dcs_menu_management/models/res_users.py:0
+#: code:addons/dcs_menu_management/wizard/dcs_menu_copy_wizard.py:0
+msgid "Only menu administrators can copy menu settings."
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-python
+#: code:addons/dcs_menu_management/models/res_users.py:0
+msgid "Only menu administrators can hide menus for users."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -878,7 +1147,7 @@ msgstr ""
 #. module: dcs_menu_management
 #. odoo-python
 #: code:addons/dcs_menu_management/models/res_users.py:0
-msgid "Only menu administrators can set menu preferences on users."
+msgid "Only menu administrators can set menu options on users."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -886,6 +1155,12 @@ msgstr ""
 msgid ""
 "Open <strong>Menu Configuration</strong> to browse the menu tree and restrict a menu\n"
 "               for everyone, some users, companies or security groups."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_copy_wizard__copy_options
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
+msgid "Options"
 msgstr ""
 
 #. module: dcs_menu_management
@@ -906,27 +1181,36 @@ msgid "Parent menu hidden"
 msgstr ""
 
 #. module: dcs_menu_management
-#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_list_personal
-msgid "Personal Menu Preferences"
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
+msgid "Personal App Order"
 msgstr ""
 
 #. module: dcs_menu_management
-#: model:ir.actions.act_window,name:dcs_menu_management.action_dcs_personal_users
-#: model:ir.ui.menu,name:dcs_menu_management.menu_dcs_personal_users
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_copy_wizard__copy_personal
+msgid "Personal Hidden Menus"
+msgstr ""
+
+#. module: dcs_menu_management
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_rule_view_form
 msgid "Personal Preferences"
 msgstr ""
 
 #. module: dcs_menu_management
 #. odoo-python
-#: code:addons/dcs_menu_management/models/res_users.py:0
-msgid "Personal menu preferences can only add or remove menus from the list."
+#: code:addons/dcs_menu_management/models/ir_ui_menu.py:0
+msgid "Personal preference"
 msgstr ""
 
 #. module: dcs_menu_management
-#. odoo-python
-#: code:addons/dcs_menu_management/models/ir_ui_menu.py:0
-msgid "Personal preference"
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form_simple_modif
+msgid ""
+"Personalise your own menu bar. This does not change what you are allowed to "
+"do in Odoo."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
+msgid "Personally Hidden Menus"
 msgstr ""
 
 #. module: dcs_menu_management
@@ -960,14 +1244,31 @@ msgid "Protected: always visible to menu administrators"
 msgstr ""
 
 #. module: dcs_menu_management
-#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_ir_ui_menu_view_form
-msgid "Remove Restrictions"
+#. odoo-javascript
+#: code:addons/dcs_menu_management/static/src/shortcuts/shortcuts_systray.xml:0
+#: model:ir.model.fields,field_description:dcs_menu_management.field_res_users__dcs_show_recent
+msgid "Recent Menus"
 msgstr ""
 
 #. module: dcs_menu_management
-#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form_simple_modif
-msgid ""
-"Remove a menu from the list to show it again. Reload the page to apply."
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_search_personal
+msgid "Recent Menus Enabled"
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-javascript
+#: code:addons/dcs_menu_management/static/src/shortcuts/shortcuts_systray.xml:0
+msgid "Recent menus"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model,name:dcs_menu_management.model_dcs_menu_recent
+msgid "Recently Opened Menu"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_ir_ui_menu_view_form
+msgid "Remove Restrictions"
 msgstr ""
 
 #. module: dcs_menu_management
@@ -976,16 +1277,32 @@ msgid "Remove every restriction configured on this menu?"
 msgstr ""
 
 #. module: dcs_menu_management
-#: model_terms:ir.actions.act_window,help:dcs_menu_management.action_dcs_personal_users
-msgid ""
-"Remove the <em>Allowed</em> filter and switch on <strong>Hide Menus Through Preferences</strong>\n"
-"               for the users who should be able to hide the menus they do not use."
+#. odoo-javascript
+#: code:addons/dcs_menu_management/static/src/shortcuts/shortcuts_systray.xml:0
+msgid "Remove from favorites"
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-javascript
+#: code:addons/dcs_menu_management/static/src/shortcuts/shortcuts_systray.xml:0
+msgid "Remove “"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_personal_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form_simple_modif
+msgid "Reorder My Apps"
 msgstr ""
 
 #. module: dcs_menu_management
 #. odoo-python
 #: code:addons/dcs_menu_management/models/ir_ui_menu.py:0
 msgid "Report"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_order_wizard_view_form
+msgid "Reset Order"
 msgstr ""
 
 #. module: dcs_menu_management
@@ -1053,8 +1370,21 @@ msgid ""
 msgstr ""
 
 #. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_order_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_personal_wizard_view_form
 msgid "Save and Reload"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form
+msgid ""
+"Saved as \"Hide for Users\" on each menu, so it also shows in Menu "
+"Configuration."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard__scope
+msgid "Scope"
 msgstr ""
 
 #. module: dcs_menu_management
@@ -1092,7 +1422,9 @@ msgid "Select a menu..."
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard_line__sequence
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard_line__sequence
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_sequence__sequence
 msgid "Sequence"
 msgstr ""
 
@@ -1113,6 +1445,13 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/dcs_menu_management/static/src/menu_tree/menu_tree.xml:0
 msgid "Settings and Menu Management stay visible to menu administrators."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,help:dcs_menu_management.field_res_users__dcs_favorite_menu_ids
+msgid ""
+"Shortcuts shown under the star in the top bar. Menus the user cannot see are"
+" never shown."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -1151,6 +1490,20 @@ msgid "Show again every menu this user hid personally?"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields,help:dcs_menu_management.field_res_users__dcs_show_recent
+msgid ""
+"Show the history icon in the top bar with the menus this user opened most "
+"recently."
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,help:dcs_menu_management.field_res_users__dcs_show_favorites
+msgid ""
+"Show the star in the top bar with this user's favorite menus. The user can "
+"add the menu they are on and remove favorites."
+msgstr ""
+
+#. module: dcs_menu_management
 #: model:ir.model.fields,field_description:dcs_menu_management.field_ir_ui_menu__dcs_child_count
 msgid "Sub-menus"
 msgstr ""
@@ -1158,6 +1511,13 @@ msgstr ""
 #. module: dcs_menu_management
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_ir_ui_menu_view_form
 msgid "Summary"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.actions.act_window,help:dcs_menu_management.action_dcs_personal_users
+msgid ""
+"Switch on <strong>Hide Menus Through Preferences</strong>, <strong>Favorite Menus</strong> or\n"
+"               <strong>Recent Menus</strong> for each user."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -1174,6 +1534,12 @@ msgid ""
 msgstr ""
 
 #. module: dcs_menu_management
+#. odoo-javascript
+#: code:addons/dcs_menu_management/static/src/shortcuts/shortcuts_systray.xml:0
+msgid "The menus you open will appear here."
+msgstr ""
+
+#. module: dcs_menu_management
 #: model:ir.model.fields,help:dcs_menu_management.field_dcs_menu_rule__hide_user_ids
 msgid "These users never see the menu."
 msgstr ""
@@ -1181,6 +1547,12 @@ msgstr ""
 #. module: dcs_menu_management
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_rule_view_form
 msgid "This menu is archived in Odoo; nobody sees it whatever this rule says."
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-python
+#: code:addons/dcs_menu_management/models/ir_ui_menu.py:0
+msgid "This menu is not available to you."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -1202,11 +1574,26 @@ msgid "Unsupported search on visibility."
 msgstr ""
 
 #. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_form_simple_modif
+msgid "Use the star in the top bar to add the menu you are on"
+msgstr ""
+
+#. module: dcs_menu_management
 #: model:ir.model,name:dcs_menu_management.model_res_users
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard__user_id
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard__user_id
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_recent__user_id
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_sequence__user_id
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_ir_ui_menu_view_search
 #: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_rule_view_search
 msgid "User"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.actions.act_window,name:dcs_menu_management.action_dcs_personal_users
+#: model:ir.ui.menu,name:dcs_menu_management.menu_dcs_personal_users
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_view_users_list_personal
+msgid "User Menu Settings"
 msgstr ""
 
 #. module: dcs_menu_management
@@ -1285,6 +1672,21 @@ msgid "Visible to this user"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_recent__visit_date
+msgid "Visit Date"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard_line__web_icon_data
+msgid "Web Icon Image"
+msgstr ""
+
+#. module: dcs_menu_management
+#: model_terms:ir.ui.view,arch_db:dcs_menu_management.dcs_menu_copy_wizard_view_form
+msgid "What to copy"
+msgstr ""
+
+#. module: dcs_menu_management
 #: model:ir.model.fields,help:dcs_menu_management.field_dcs_menu_rule__show_group_ids
 msgid ""
 "When set, only members of at least one of these groups see the menu. "
@@ -1334,8 +1736,17 @@ msgid "With restrictions"
 msgstr ""
 
 #. module: dcs_menu_management
+#: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_order_wizard_line__wizard_id
 #: model:ir.model.fields,field_description:dcs_menu_management.field_dcs_menu_personal_wizard_line__wizard_id
 msgid "Wizard"
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-python
+#: code:addons/dcs_menu_management/models/dcs_menu_sequence.py:0
+#: code:addons/dcs_menu_management/models/res_users.py:0
+#: code:addons/dcs_menu_management/wizard/dcs_menu_order_wizard.py:0
+msgid "You are not allowed to change this application order."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -1369,7 +1780,7 @@ msgstr ""
 #. module: dcs_menu_management
 #. odoo-python
 #: code:addons/dcs_menu_management/models/res_users.py:0
-msgid "You cannot change the menu preferences of another user."
+msgid "You cannot change the menus of another user."
 msgstr ""
 
 #. module: dcs_menu_management
@@ -1417,6 +1828,12 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/dcs_menu_management/static/src/menu_tree/menu_tree.js:0
 msgid "“%s” is visible again."
+msgstr ""
+
+#. module: dcs_menu_management
+#. odoo-javascript
+#: code:addons/dcs_menu_management/static/src/shortcuts/shortcuts_systray.xml:0
+msgid "” to favorites"
 msgstr ""
 
 #. module: dcs_menu_management

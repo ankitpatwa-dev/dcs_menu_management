@@ -2,6 +2,8 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0).
 
 from . import dcs_menu_rule
+from . import dcs_menu_sequence
+from . import dcs_menu_recent
 from . import ir_ui_menu
 from . import res_users
 from . import ir_http

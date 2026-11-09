@@ -2,9 +2,10 @@
 
 Odoo 19.0 · Community and Enterprise · LGPL-3 · by [DevsCodeSpace](https://devscodespace.com)
 
-Decide who sees which Odoo menu without editing XML, Python or security groups. Hide menus
-for everyone, for some users, companies or security groups, and let selected users hide the
-menus they never use. The module **only narrows** Odoo's standard menu visibility: it never
+Decide who sees which Odoo menu, and in which order, without editing XML, Python or security
+groups. Hide menus for everyone, for some users, companies or security groups; change the
+application order for everyone or per user; give users favorite and recent menus in the top
+bar; let selected users hide the menus they never use; copy menu settings between users. The module **only narrows** Odoo's standard menu visibility: it never
 shows a menu, an action or a record to someone Odoo would not show it to.
 
 ---
@@ -41,7 +42,12 @@ shows a menu, an action or a record to someone Odoo would not show it to.
 | Personal menus | *Hide Menus Through Preferences* per user; a **My Menus** entry in the user menu and a **My Menus** tab in preferences. |
 | List view | Settings › Menu Management › All Menus: native list with status badges, filters, search by user/company/group, group by parent menu. |
 | Rules list | Settings › Menu Management › Visibility Rules: every configured rule, filters, who changed it last. |
-| Personal overview | Settings › Menu Management › Personal Preferences: switch the permission on/off per user, see and reset their hidden menus. |
+| Application order | Settings › Menu Management › Application Order: drag applications into the order everyone sees (menu bar, apps menu, home screen). Per-user order from the user form or, for allowed users, *My Menus › Reorder My Apps*. Odoo's own menu sequence is never modified. |
+| Favorite menus | Star icon in the top bar: add the current menu, open a favorite, remove it with ×. Administrators can also set favorites on the user form. |
+| Recent menus | History icon in the top bar: the last 10 menus the user opened (configurable), stored per user on the server, private to the user. |
+| User form | *Menu Management* tab: hidden menus for this user, options (personal hiding, favorites, recent), favorites, personal hidden menus, application order, copy settings. |
+| Copy settings | Copy hidden menus, personal hidden menus, favorites, application order and options from one user to others. |
+| User Menu Settings | Settings › Menu Management › User Menu Settings: switch personal hiding, favorites and recent menus on/off for many users, see and reset their hidden menus. |
 
 ## Installation
 
@@ -82,7 +88,8 @@ The module does not change any standard Odoo group.
 | Settings › Menu Management › **Menu Configuration** | Interactive tree, quick hide/show, rule dialog, preview as user |
 | Settings › Menu Management › **All Menus** | List of every menu with status and filters |
 | Settings › Menu Management › **Visibility Rules** | Every configured rule |
-| Settings › Menu Management › **Personal Preferences** | Users allowed to hide menus personally |
+| Settings › Menu Management › **Application Order** | Order of the applications for everyone |
+| Settings › Menu Management › **User Menu Settings** | Per-user switches: personal hiding, favorites, recent menus |
 
 ## Administrator guide
 
@@ -142,6 +149,46 @@ From the same places you can see a user's hidden menus and **Reset Personal Menu
 Removing the permission suspends the user's personal choices (they are kept and apply
 again if the permission is given back).
 
+### Change the application order
+
+* **Everyone:** Settings › Menu Management › **Application Order**. Drag the applications with
+  the handles, then **Save and Reload**. **Reset Order** returns to Odoo's order.
+* **One user:** user form › *Menu Management* tab › **Application Order**. A personal order
+  replaces the global one for that user; **Reset Order** returns them to the global order.
+* Applications missing from a saved order (for example installed later) come after the ordered
+  ones, in Odoo's order. Only applications (top-level menus) are ordered; Odoo's
+  `ir.ui.menu.sequence` is never written.
+
+### Configure a user (user form)
+
+Settings › Users › a user › **Menu Management** tab:
+
+* **Hidden Menus**: menus hidden for this user. Saved as *Hide for Users* on each menu's rule,
+  so Menu Configuration shows the same thing.
+* **Options**: *Hide Menus Through Preferences*, *Favorite Menus*, *Recent Menus*.
+* **Favorite Menus** and **Personally Hidden Menus** of the user.
+* Buttons: **Application Order**, **Copy Menu Settings to Other Users**, **Reset Personal Menus**.
+
+Settings › Menu Management › **User Menu Settings** shows the same switches for all users in an
+editable list.
+
+### Copy menu settings to other users
+
+User form › *Menu Management* › **Copy Menu Settings to Other Users**: choose the target users
+and what to copy (hidden menus, personal hidden menus, favorites, application order, options).
+Hidden menus are added to the targets; the other lists replace theirs.
+
+### Favorite and recent menus
+
+* Switch on **Favorite Menus** / **Recent Menus** per user (user form or User Menu Settings).
+  The star and history icons appear in their top bar after a reload.
+* Favorites and recent menus only ever list menus the user can open right now (all visibility
+  rules, active companies, and the menu's parents are checked), so they cannot be used to reach
+  a hidden menu.
+* Number of recent menus: system parameter `dcs_menu_management.recent_limit` (default 10, max 50).
+* Recent menus are private: record rules restrict each user, administrators included, to their
+  own history.
+
 ## Personal preferences guide
 
 For users who have the **Hide Menus Through Preferences** permission:
@@ -152,6 +199,14 @@ For users who have the **Hide Menus Through Preferences** permission:
 3. Click **Save and Reload**.
 
 To bring menus back, open **My Menus** again and switch them off, or click **Show All**.
+**Reorder My Apps** (in My Menus, or *My Menus* tab of the preferences) puts your applications
+in your own order.
+
+**Favorites** (if enabled for you): open a menu, click the **star** in the top bar, then
+**Add “…” to favorites**. Click a favorite to open it, **×** to remove it.
+
+**Recent menus** (if enabled for you): click the **history** icon in the top bar to reopen one of
+the last menus you used.
 You can also open **My Preferences › My Menus** and remove menus from *Hidden Menus*, then
 reload the page.
 
@@ -223,15 +278,19 @@ dcs_menu_management/
 │   ├── dcs_menu_rule.py     dcs.menu.rule: one rule per menu (unique), lists of users,
 │   │                        companies, groups; manager checks; cache invalidation
 │   ├── ir_ui_menu.py        visibility engine (inherits ir.ui.menu), admin API for the tree
-│   ├── res_users.py         permission + personal hidden menus, self-write guards
+│   ├── dcs_menu_sequence.py application order (global rows and per-user rows)
+│   ├── dcs_menu_recent.py   recently opened menus (one row per user and menu, private)
+│   ├── res_users.py         options, personal hidden menus, favorites, admin hidden menus,
+│   │                        self-write guards
 │   └── ir_http.py           session flag for the "My Menus" entry
-├── wizard/                  dcs.menu.personal.wizard (My Menus)
+├── wizard/                  My Menus, Application Order, Copy Menu Settings
 ├── security/                Menu Manager group, ACLs, wizard record rules
 ├── views/                   rule views, ir.ui.menu list/form/search, user views, menus
 ├── data/                    client action (Menu Configuration, path /odoo/menu-management)
 ├── demo/                    demo user allowed to hide menus, archived example rule
 ├── static/src/menu_tree/    OWL client action (tree, filters, preview)
 ├── static/src/user_menu/    "My Menus" user menu entry
+├── static/src/shortcuts/    favorites (star) and recent (history) top-bar dropdowns, menu-click tracker
 ├── static/tests/tours/      browser tours
 └── tests/                   Python and HTTP tests
 ```
@@ -255,6 +314,14 @@ with `no-store` on every page load and refreshes its local copy, so a company sw
 rule change shows on the next reload. Active companies come from the context
 (`allowed_company_ids`), otherwise from the `cids` cookie set by the company switcher,
 otherwise the user's current company; companies the user is not allowed in are ignored.
+
+**Application order, favorites, recent.** `load_menus()` returns the applications in the
+user's order (personal rows, else global rows, else Odoo's order; cached per user). Every menu
+click in the web client goes through the menu service's `selectMenu()`, which the module wraps
+to record recent menus (one RPC, only when the option is on) and to know the current menu for
+"Add to favorites". `dcs_get_shortcuts`, `dcs_toggle_favorite` and `dcs_record_visit` work on the
+current user only and check that each menu can be opened (visible, parents visible, has an
+action or is an application).
 
 **Caches and invalidation.** Three user-independent caches (menu structure, protected
 menus, rule snapshot) and the per-user result live in Odoo's registry cache. They are
@@ -286,7 +353,7 @@ odoo-bin -c odoo.conf -d <test-db> -i dcs_menu_management \
          --test-tags /dcs_menu_management --stop-after-init
 ```
 
-51 automated tests (`tests/`), including two browser tours (need Chrome/Chromium and the
+74 automated tests (`tests/`), including three browser tours (need Chrome/Chromium and the
 `websocket-client` Python package):
 
 * global hide/restore, quick toggle, user, company (single and several active companies,
@@ -300,7 +367,15 @@ odoo-bin -c odoo.conf -d <test-db> -i dcs_menu_management \
   reasons equal to the real result, cache invalidation, zero queries once cached;
 * HTTP: menus follow the `cids` cookie, rule changes reach the next menu request,
   session flag, client context cannot lift a rule;
-* tours: Menu Configuration (search, hide, configure, preview, restore) and My Menus.
+* application order: default, global, personal over global, apps added later, wizard and reset,
+  user reordering own apps, permissions (own only, global read-only, others refused);
+* favorites: toggle and list, option off, never exposing hidden/unreachable menus, other users,
+  forbidden commands, sections vs applications;
+* recent menus: order, one row per menu, limit, option off, invisible menus not recorded,
+  private to each user (administrators included);
+* user form: hidden menus field (rules), admin-only field, copy wizard and its permissions;
+* tours: Menu Configuration (search, hide, configure, preview, restore), My Menus, and the
+  favorites/recent top-bar icons.
 
 ## Troubleshooting
 
@@ -311,6 +386,8 @@ odoo-bin -c odoo.conf -d <test-db> -i dcs_menu_management \
 | A "Show only for users" user does not see the menu | Rules never add visibility: the user also needs the menu's Odoo groups and read access to the action's model (reason *Odoo groups or access rights*). |
 | Menu Managers cannot see Menu Management | They also need access to the Settings app (*Administration: Access Rights*). |
 | A menu is visible in one company and not another | Expected with company rules; check the active companies in the switcher. |
+| Star or history icon missing in the top bar | Switch on *Favorite Menus* / *Recent Menus* for the user, then reload the page. |
+| A favorite does not appear | Favorites only list menus the user can open now (rules, companies, parent menus, access rights). Sections without an action cannot be favorites; applications can. |
 | *My Menus* is missing from the user menu | The user needs *Hide Menus Through Preferences*; reload after it is switched on. |
 | Users can still open a hidden screen from a link | Expected: hiding a menu is not access control. Use access rights / record rules. |
 | Locked out of Settings | Not possible for Settings administrators/Menu Managers (protected menus). For other users, open `/odoo/menu-management` as an administrator and remove the rule. |
@@ -337,4 +414,6 @@ License: GNU Lesser General Public License v3.0 (see `LICENSE`).
 
 ### Changelog
 
+* **19.0.1.1.0**: application order (global and per user), favorite menus, recent menus,
+  per-user Menu Management tab, copy menu settings.
 * **19.0.1.0.0**: first release for Odoo 19 (port of 18.0.1.0.0).

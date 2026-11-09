@@ -3,3 +3,11 @@ access_dcs_menu_rule_system,dcs.menu.rule system,model_dcs_menu_rule,base.group_
 access_dcs_menu_rule_manager,dcs.menu.rule manager,model_dcs_menu_rule,group_menu_manager,1,1,1,1
 access_dcs_menu_personal_wizard_user,dcs.menu.personal.wizard user,model_dcs_menu_personal_wizard,base.group_user,1,1,1,1
 access_dcs_menu_personal_wizard_line_user,dcs.menu.personal.wizard.line user,model_dcs_menu_personal_wizard_line,base.group_user,1,1,1,1
+access_dcs_menu_sequence_system,dcs.menu.sequence system,model_dcs_menu_sequence,base.group_system,1,1,1,1
+access_dcs_menu_sequence_manager,dcs.menu.sequence manager,model_dcs_menu_sequence,group_menu_manager,1,1,1,1
+access_dcs_menu_sequence_user,dcs.menu.sequence user,model_dcs_menu_sequence,base.group_user,1,1,1,1
+access_dcs_menu_recent_user,dcs.menu.recent user,model_dcs_menu_recent,base.group_user,1,1,1,1
+access_dcs_menu_order_wizard_user,dcs.menu.order.wizard user,model_dcs_menu_order_wizard,base.group_user,1,1,1,1
+access_dcs_menu_order_wizard_line_user,dcs.menu.order.wizard.line user,model_dcs_menu_order_wizard_line,base.group_user,1,1,1,1
+access_dcs_menu_copy_wizard_system,dcs.menu.copy.wizard system,model_dcs_menu_copy_wizard,base.group_system,1,1,1,1
+access_dcs_menu_copy_wizard_manager,dcs.menu.copy.wizard manager,model_dcs_menu_copy_wizard,group_menu_manager,1,1,1,1

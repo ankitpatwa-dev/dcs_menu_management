@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 DevsCodeSpace. License LGPL-3. -->
+<odoo>
+    <record id="dcs_menu_order_wizard_view_form" model="ir.ui.view">
+        <field name="name">dcs.menu.order.wizard.form</field>
+        <field name="model">dcs.menu.order.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Application Order">
+                <field name="scope" invisible="1"/>
+                <field name="user_id" invisible="1"/>
+                <field name="has_custom_order" invisible="1"/>
+                <p class="text-muted" invisible="scope != 'global'">
+                    Drag the applications into the order everyone should see them in the menu bar and on the home
+                    screen. Users with a personal order keep theirs. Odoo's own menu sequence is not changed.
+                </p>
+                <p class="text-muted" invisible="scope != 'user'">
+                    Drag the applications into the order you want. Only this user's menu bar changes.
+                </p>
+                <field name="line_ids" nolabel="1">
+                    <list editable="bottom" create="0" delete="0">
+                        <field name="sequence" widget="handle"/>
+                        <field name="web_icon_data" widget="image" options="{'size': [28, 28]}" nolabel="1"
+                               readonly="1" width="48px"/>
+                        <field name="menu_id" force_save="1"/>
+                    </list>
+                </field>
+                <footer>
+                    <button name="action_apply" type="object" string="Save and Reload" class="btn-primary"
+                            data-hotkey="q"/>
+                    <button name="action_reset" type="object" class="btn-secondary" invisible="not has_custom_order"
+                            string="Reset Order" confirm="Go back to the default order?"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dcs_menu_order_global" model="ir.actions.act_window">
+        <field name="name">Application Order</field>
+        <field name="res_model">dcs.menu.order.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_scope': 'global'}</field>
+    </record>
+</odoo>
