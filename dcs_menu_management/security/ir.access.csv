@@ -3,3 +3,12 @@ access_dcs_menu_rule_system,dcs.menu.rule system,dcs.menu.rule,base.group_system
 access_dcs_menu_rule_manager,dcs.menu.rule manager,dcs.menu.rule,dcs_menu_management.group_menu_manager,crud,
 access_dcs_menu_personal_wizard_own,My Menus wizard: own records,dcs.menu.personal.wizard,base.group_user,crud,"[('create_uid', '=', user.id)]"
 access_dcs_menu_personal_wizard_line_own,My Menus wizard lines: own records,dcs.menu.personal.wizard.line,base.group_user,crud,"[('wizard_id.create_uid', '=', user.id)]"
+access_dcs_menu_sequence_system,Application order: administrators,dcs.menu.sequence,base.group_system,crud,
+access_dcs_menu_sequence_manager,Application order: menu managers,dcs.menu.sequence,dcs_menu_management.group_menu_manager,crud,
+access_dcs_menu_sequence_user_read,Application order: read own and global,dcs.menu.sequence,base.group_user,r,"['|', ('user_id', '=', user.id), ('user_id', '=', False)]"
+access_dcs_menu_sequence_user_write,Application order: change own,dcs.menu.sequence,base.group_user,cud,"[('user_id', '=', user.id)]"
+access_dcs_menu_recent_own,Recent menus: own records only,dcs.menu.recent,base.group_user,crud,"[('user_id', '=', user.id)]"
+access_dcs_menu_order_wizard_own,Application order wizard: own records,dcs.menu.order.wizard,base.group_user,crud,"[('create_uid', '=', user.id)]"
+access_dcs_menu_order_wizard_line_own,Application order wizard lines: own records,dcs.menu.order.wizard.line,base.group_user,crud,"[('wizard_id.create_uid', '=', user.id)]"
+access_dcs_menu_copy_wizard_system,Copy menu settings: administrators,dcs.menu.copy.wizard,base.group_system,crud,
+access_dcs_menu_copy_wizard_manager,Copy menu settings: menu managers,dcs.menu.copy.wizard,dcs_menu_management.group_menu_manager,crud,

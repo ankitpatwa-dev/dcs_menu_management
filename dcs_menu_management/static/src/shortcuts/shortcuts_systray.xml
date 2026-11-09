@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 DevsCodeSpace. License LGPL-3. -->
+<templates xml:space="preserve">
+    <t t-name="dcs_menu_management.ShortcutItem">
+        <div class="o_dcs_shortcut_text">
+            <div class="o_dcs_shortcut_name text-truncate" t-out="item.name"/>
+            <div t-if="item.path" class="o_dcs_shortcut_path text-truncate" t-out="item.path"/>
+        </div>
+    </t>
+
+    <t t-name="dcs_menu_management.FavoritesSystray">
+        <Dropdown position="'bottom-end'" beforeOpen.bind="this.load" menuClass="'o_dcs_shortcuts_dropdown'">
+            <button class="o_dcs_favorites_toggle" title="Favorite menus" aria-label="Favorite menus">
+                <i class="oi oi-lg" data-icon="star" role="img"/>
+            </button>
+            <t t-set-slot="content">
+                <div class="o_dcs_shortcuts o_dcs_favorites">
+                    <div class="o_dcs_shortcuts_header">Favorite Menus</div>
+                    <div t-if="this.state.loaded and !this.state.items.length" class="o_dcs_shortcuts_empty">
+                        No favorite yet. Open a menu, then add it here.
+                    </div>
+                    <t t-foreach="this.state.items" t-as="item" t-key="item.id">
+                        <div class="o_dcs_shortcut d-flex align-items-center" t-att-data-menu-id="item.id">
+                            <DropdownItem class="'o_dcs_shortcut_open flex-grow-1 overflow-hidden'"
+                                          onSelected="() => this.open(item)">
+                                <t t-call="dcs_menu_management.ShortcutItem"/>
+                            </DropdownItem>
+                            <button type="button" class="btn btn-link btn-sm o_dcs_shortcut_remove"
+                                    title="Remove from favorites" aria-label="Remove from favorites"
+                                    t-on-click.stop="() => this.remove(item)">
+                                <i class="oi" data-icon="close"/>
+                            </button>
+                        </div>
+                    </t>
+                    <div t-if="this.currentMenu" class="o_dcs_shortcuts_footer">
+                        <button type="button" class="btn btn-link btn-sm o_dcs_toggle_current"
+                                t-on-click.stop="this.toggleCurrent">
+                            <i class="oi me-1" data-icon="star" t-att-class="{ 'text-warning': this.currentIsFavorite }"/>
+                            <t t-if="this.currentIsFavorite">Remove “<t t-out="this.currentMenu.name"/>”</t>
+                            <t t-else="">Add “<t t-out="this.currentMenu.name"/>” to favorites</t>
+                        </button>
+                    </div>
+                </div>
+            </t>
+        </Dropdown>
+    </t>
+
+    <t t-name="dcs_menu_management.RecentSystray">
+        <Dropdown position="'bottom-end'" beforeOpen.bind="this.load" menuClass="'o_dcs_shortcuts_dropdown'">
+            <button class="o_dcs_recent_toggle" title="Recent menus" aria-label="Recent menus">
+                <i class="oi oi-lg" data-icon="history" role="img"/>
+            </button>
+            <t t-set-slot="content">
+                <div class="o_dcs_shortcuts o_dcs_recent">
+                    <div class="o_dcs_shortcuts_header">Recent Menus</div>
+                    <div t-if="this.state.loaded and !this.state.items.length" class="o_dcs_shortcuts_empty">
+                        The menus you open will appear here.
+                    </div>
+                    <t t-foreach="this.state.items" t-as="item" t-key="item.id">
+                        <DropdownItem class="'o_dcs_shortcut o_dcs_shortcut_open'" onSelected="() => this.open(item)">
+                            <t t-call="dcs_menu_management.ShortcutItem"/>
+                        </DropdownItem>
+                    </t>
+                </div>
+            </t>
+        </Dropdown>
+    </t>
+</templates>

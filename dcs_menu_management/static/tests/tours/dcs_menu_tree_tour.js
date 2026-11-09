@@ -134,3 +134,52 @@ registry.category("web_tour.tours").add("dcs_menu_management_my_menus", {
         },
     ],
 });
+
+registry.category("web_tour.tours").add("dcs_menu_management_shortcuts", {
+    steps: () => [
+        {
+            content: "Favorites and recent icons are in the top bar",
+            trigger: ".o_dcs_favorites_toggle",
+        },
+        {
+            trigger: ".o_dcs_recent_toggle",
+        },
+        {
+            content: "Open the applications menu",
+            trigger: ".o_navbar_apps_menu button",
+            run: "click",
+        },
+        {
+            content: "Open the test application",
+            trigger: ".o_app:contains('DCS Test App')",
+            run: "click",
+        },
+        {
+            content: "The application is open",
+            trigger: ".o_list_view",
+        },
+        {
+            content: "Open favorites",
+            trigger: ".o_dcs_favorites_toggle",
+            run: "click",
+        },
+        {
+            content: "Add the current menu",
+            trigger: ".o_dcs_toggle_current:contains('DCS Test App')",
+            run: "click",
+        },
+        {
+            content: "It is listed as a favorite",
+            trigger: ".o_dcs_favorites .o_dcs_shortcut:contains('DCS Test App')",
+        },
+        {
+            content: "Open recent menus",
+            trigger: ".o_dcs_recent_toggle",
+            run: "click",
+        },
+        {
+            content: "The application is in the history",
+            trigger: ".o_dcs_recent .o_dcs_shortcut_open:contains('DCS Test App')",
+        },
+    ],
+});

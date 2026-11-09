@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 DevsCodeSpace. License LGPL-3. -->
+<odoo>
+    <record id="dcs_menu_copy_wizard_view_form" model="ir.ui.view">
+        <field name="name">dcs.menu.copy.wizard.form</field>
+        <field name="model">dcs.menu.copy.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Copy Menu Settings">
+                <group>
+                    <field name="source_user_id" options="{'no_create': True}"/>
+                    <field name="user_ids" widget="many2many_tags" options="{'no_create': True}"
+                           placeholder="Choose the users to update..."/>
+                </group>
+                <group string="What to copy">
+                    <field name="copy_hidden"/>
+                    <field name="copy_personal"/>
+                    <field name="copy_favorites"/>
+                    <field name="copy_app_order"/>
+                    <field name="copy_options"/>
+                </group>
+                <p class="text-muted small">
+                    Hidden menus are added to the target users (their existing ones are kept). Personal hidden
+                    menus, favorites and application order replace the target users' current ones.
+                </p>
+                <footer>
+                    <button name="action_copy" type="object" string="Copy" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

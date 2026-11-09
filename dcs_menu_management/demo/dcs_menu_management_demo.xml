@@ -4,6 +4,12 @@
     <!-- The demo user may hide menus through their preferences -->
     <record id="base.user_demo" model="res.users">
         <field name="dcs_allow_menu_preferences" eval="True"/>
+        <field name="dcs_show_favorites" eval="True"/>
+        <field name="dcs_show_recent" eval="True"/>
+    </record>
+    <record id="base.user_admin" model="res.users">
+        <field name="dcs_show_favorites" eval="True"/>
+        <field name="dcs_show_recent" eval="True"/>
     </record>
 
     <!-- Example rule, archived so it changes nothing until activated -->

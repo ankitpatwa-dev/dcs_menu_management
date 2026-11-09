@@ -33,7 +33,9 @@ by any client, so none of them can switch a restriction off.
 
 from collections import defaultdict
 
-from odoo import SUPERUSER_ID, _, _lt, api, fields, models, tools
+from psycopg2 import IntegrityError
+
+from odoo import SUPERUSER_ID, Command, _, _lt, api, fields, models, tools
 from odoo.exceptions import AccessError
 from odoo.http import request
 
@@ -454,7 +456,146 @@ class IrUiMenu(models.Model):
 
     @api.model
     def load_menus(self, debug):
-        return super(IrUiMenu, self.with_context(**{CTX_SKIP_COMPANY: True})).load_menus(debug)
+        menus = super(IrUiMenu, self.with_context(**{CTX_SKIP_COMPANY: True})).load_menus(debug)
+        return self._dcs_apply_app_order(menus)
+
+    # ------------------------------------------------------------------
+    # Application order
+    # ------------------------------------------------------------------
+    @api.model
+    @api.ormcache('self.env.uid')
+    def _dcs_app_order(self):
+        """{app menu id: position} for the current user: personal order if the
+        user has one, otherwise the global order, otherwise empty (Odoo order)."""
+        rows = self.env['dcs.menu.sequence'].sudo().search_fetch(
+            [('user_id', 'in', [self.env.uid, False])], ['menu_id', 'user_id', 'sequence'])
+        personal = {r.menu_id.id: r.sequence for r in rows if r.user_id}
+        return personal or {r.menu_id.id: r.sequence for r in rows if not r.user_id}
+
+    @api.model
+    def _dcs_apply_app_order(self, menus):
+        """Reorder the applications of a load_menus() result (copy, the input
+        may be cached). Applications without a position keep Odoo's order,
+        after the ordered ones."""
+        if self.env.uid == SUPERUSER_ID or not menus.get('root'):
+            return menus
+        order = self._dcs_app_order()
+        children = menus['root'].get('children') or []
+        if not order or not children:
+            return menus
+        index = {menu_id: i for i, menu_id in enumerate(children)}
+        new_children = sorted(
+            children, key=lambda mid: (0, order[mid], index[mid]) if mid in order else (1, index[mid], 0))
+        if new_children == children:
+            return menus
+        result = dict(menus)
+        result['root'] = dict(menus['root'], children=new_children)
+        return result
+
+    @api.model
+    def _dcs_ordered_apps(self, user=None, scope_global=False):
+        """Applications in their current order, for the order wizard."""
+        Menu = self.with_context(**FULL_LIST_CTX)
+        apps = Menu.search([('parent_id', '=', False)])
+        if not scope_global:
+            as_user = self.with_user(user or self.env.user)
+            visible = as_user.with_context(**{CTX_SKIP_COMPANY: True})._visible_menu_ids(False)
+            apps = apps.filtered(lambda m: m.id in visible)
+        rows = self.env['dcs.menu.sequence'].sudo().search(
+            [('user_id', '=', False if scope_global else (user or self.env.user).id)])
+        if not rows and not scope_global:
+            rows = self.env['dcs.menu.sequence'].sudo().search([('user_id', '=', False)])
+        position = {r.menu_id.id: r.sequence for r in rows}
+        original = {menu.id: i for i, menu in enumerate(apps)}
+        return apps.sorted(lambda m: (0, position[m.id], 0) if m.id in position
+                           else (1, original[m.id], 0))
+
+    # ------------------------------------------------------------------
+    # Favorite and recent menus (current user only)
+    # ------------------------------------------------------------------
+    @api.model
+    def _dcs_openable(self, menu, visible):
+        """Menu the user can open from the menus: visible with all its parents,
+        and with an action (applications borrow their first item's action in the
+        web client)."""
+        menu = menu.sudo()
+        if not menu or not (menu.action or not menu.parent_id):
+            return False
+        path = [int(pid) for pid in (menu.parent_path or '').strip('/').split('/') if pid]
+        return bool(path) and all(pid in visible for pid in path)
+
+    @api.model
+    def _dcs_shortcut_values(self, menus):
+        """Display data for menus the user can open right now."""
+        visible = self._visible_menu_ids(self._dcs_debug())
+        result = []
+        for menu in menus.sudo():
+            if not self._dcs_openable(menu, visible):
+                continue
+            result.append({
+                'id': menu.id,
+                'name': menu.name,
+                'path': menu.parent_id.complete_name or '',
+            })
+        return result
+
+    @api.model
+    def dcs_get_shortcuts(self):
+        user = self.env.user.sudo()
+        result = {'favorites': [], 'recent': []}
+        if user.dcs_show_favorites:
+            favorites = user.dcs_favorite_menu_ids.with_context(**FULL_LIST_CTX).sorted(
+                lambda m: (m.complete_name or '').lower())
+            result['favorites'] = self._dcs_shortcut_values(favorites)
+        if user.dcs_show_recent:
+            rows = self.env['dcs.menu.recent'].search(
+                [('user_id', '=', self.env.uid)], limit=self._dcs_recent_limit())
+            result['recent'] = self._dcs_shortcut_values(rows.menu_id)
+        return result
+
+    @api.model
+    def _dcs_recent_limit(self):
+        value = self.env['ir.config_parameter'].sudo().get_int(
+            'dcs_menu_management.recent_limit', 10)
+        return max(1, min(value or 10, 50))
+
+    @api.model
+    def dcs_toggle_favorite(self, menu_id):
+        """Add or remove a menu from the current user's favorites.
+        Returns True when the menu is now a favorite."""
+        user = self.env.user
+        if not user.sudo().dcs_show_favorites:
+            raise AccessError(_('Favorite menus are not enabled for you.'))
+        menu = self.browse(int(menu_id)).exists()
+        is_favorite = bool(menu) and menu in user.sudo().dcs_favorite_menu_ids
+        if not is_favorite and not self._dcs_openable(menu, self._visible_menu_ids(self._dcs_debug())):
+            raise AccessError(_('This menu is not available to you.'))
+        command = Command.unlink(menu.id) if is_favorite else Command.link(menu.id)
+        user.write({'dcs_favorite_menu_ids': [command]})
+        return not is_favorite
+
+    @api.model
+    def dcs_record_visit(self, menu_id):
+        """Remember that the current user opened this menu (recent menus)."""
+        user = self.env.user
+        if not user.sudo().dcs_show_recent:
+            return False
+        menu = self.browse(int(menu_id)).exists()
+        if not self._dcs_openable(menu, self._visible_menu_ids(self._dcs_debug())):
+            return False
+        Recent = self.env['dcs.menu.recent']
+        row = Recent.search([('user_id', '=', user.id), ('menu_id', '=', menu.id)], limit=1)
+        if row:
+            row.visit_date = fields.Datetime.now()
+        else:
+            try:
+                with self.env.cr.savepoint():
+                    Recent.create({'user_id': user.id, 'menu_id': menu.id})
+            except IntegrityError:  # same menu recorded by a parallel request
+                return True
+        old = Recent.search([('user_id', '=', user.id)])[self._dcs_recent_limit():]
+        old.unlink()
+        return True
 
     @api.model
     def load_menus_root(self):

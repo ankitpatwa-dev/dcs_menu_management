@@ -7,9 +7,9 @@
         <img src="icon.png" alt="Advanced Menu Management" style="width:68px;height:68px;border-radius:16px;margin-bottom:18px;"/>
         <h1 style="font-size:38px;line-height:1.15;font-weight:700;margin:0 0 14px;color:#fff;">Advanced Menu Management</h1>
         <p style="font-size:18px;color:#ddd6fe;margin:0 0 22px;">
-          Show each person only the Odoo menus they need. Hide any menu for everyone, for chosen users,
-          companies or security groups, and let users hide the menus they never use.
-          No XML, no code, and your access rights stay exactly as they are.
+          Show each person only the Odoo menus they need, in the order they want. Hide any menu for everyone,
+          users, companies or security groups, change the application order, and give users favorite and recent
+          menus in the top bar. No XML, no code, and your access rights stay exactly as they are.
         </p>
         <span style="display:inline-block;background:#fb7185;color:#fff;border-radius:20px;padding:5px 15px;font-weight:600;font-size:14px;margin:0 6px 6px 0;">Odoo 20.0</span>
         <span style="display:inline-block;background:rgba(255,255,255,.15);color:#fff;border-radius:20px;padding:5px 15px;font-weight:600;font-size:14px;margin:0 6px 6px 0;">Community</span>
@@ -49,6 +49,22 @@
     <div style="flex:1 1 300px;border:1px solid #e5e7eb;border-radius:14px;padding:20px;">
       <div style="font-weight:700;color:#4c1d95;margin-bottom:4px;">Personal menus</div>
       <div style="color:#4b5563;font-size:15px;">Allow chosen users to hide the menus they do not use. It only changes their own menu bar.</div>
+    </div>
+    <div style="flex:1 1 300px;border:1px solid #e5e7eb;border-radius:14px;padding:20px;">
+      <div style="font-weight:700;color:#4c1d95;margin-bottom:4px;">Change the application order</div>
+      <div style="color:#4b5563;font-size:15px;">Drag applications into the order you want, for everyone or for one user. Odoo's own sequence is never changed.</div>
+    </div>
+    <div style="flex:1 1 300px;border:1px solid #e5e7eb;border-radius:14px;padding:20px;">
+      <div style="font-weight:700;color:#4c1d95;margin-bottom:4px;">Favorite menus</div>
+      <div style="color:#4b5563;font-size:15px;">A star in the top bar: add the menu you are on in one click, open favorites from anywhere, remove with ×.</div>
+    </div>
+    <div style="flex:1 1 300px;border:1px solid #e5e7eb;border-radius:14px;padding:20px;">
+      <div style="font-weight:700;color:#4c1d95;margin-bottom:4px;">Recent menus</div>
+      <div style="color:#4b5563;font-size:15px;">A history icon in the top bar lists the last menus each user opened, on any device.</div>
+    </div>
+    <div style="flex:1 1 300px;border:1px solid #e5e7eb;border-radius:14px;padding:20px;">
+      <div style="font-weight:700;color:#4c1d95;margin-bottom:4px;">Per-user settings, copied in one click</div>
+      <div style="color:#4b5563;font-size:15px;">Hidden menus, favorites, app order and options on the user form, and copy them from one user to others.</div>
     </div>
   </div>
 
@@ -110,7 +126,7 @@
 
   <div style="margin-bottom:40px;">
     <h3 style="font-size:20px;font-weight:700;margin:0 0 6px;"><span style="display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;border-radius:50%;background:#db2777;color:#fff;font-size:16px;margin-right:10px;">3</span>User: switch on the menus to hide</h3>
-    <p style="color:#4b5563;font-size:16px;margin:0 0 14px 42px;">Switch on <b>Hide</b> for the menus not needed (hiding a section hides everything under it), then click <b>Save and Reload</b>. To bring menus back, switch them off again or click <b>Show All</b>.</p>
+    <p style="color:#4b5563;font-size:16px;margin:0 0 14px 42px;">Switch on <b>Hide</b> for the menus not needed (hiding a section hides everything under it), then click <b>Save and Reload</b>. To bring menus back, switch them off again or click <b>Show All</b>. <b>Reorder My Apps</b> lets the user put their applications in their own order.</p>
     <img src="screenshots/step_08_my_menus.png" alt="Choose the menus to hide" style="width:100%;max-width:820px;display:block;margin:0 auto;"/>
   </div>
 
@@ -118,6 +134,46 @@
     <h3 style="font-size:20px;font-weight:700;margin:0 0 6px;"><span style="display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;border-radius:50%;background:#db2777;color:#fff;font-size:16px;margin-right:10px;">4</span>User: review hidden menus in My Preferences</h3>
     <p style="color:#4b5563;font-size:16px;margin:0 0 14px 42px;">Hidden menus are also listed in <b>avatar › My Preferences › My Menus</b> tab. Remove a menu from the list to show it again, then reload the page.</p>
     <img src="screenshots/step_09_preferences.png" alt="My Menus tab in preferences" style="width:100%;max-width:900px;display:block;margin:0 auto;"/>
+  </div>
+
+  <!-- ============ ORDER / FAVORITES / RECENT ============ -->
+  <h2 style="font-size:28px;font-weight:700;margin:0 0 6px;">Application order, favorite and recent menus</h2>
+  <p style="color:#6b7280;font-size:16px;margin:0 0 28px;">Help people get to their work faster. Every shortcut respects the visibility rules: a favorite or recent menu never shows something the user cannot open.</p>
+
+  <div style="margin-bottom:40px;">
+    <h3 style="font-size:20px;font-weight:700;margin:0 0 6px;"><span style="display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;border-radius:50%;background:#0d9488;color:#fff;font-size:16px;margin-right:10px;">1</span>Set the application order for everyone</h3>
+    <p style="color:#4b5563;font-size:16px;margin:0 0 14px 42px;">Go to <b>Settings › Menu Management › Application Order</b>, drag the applications into place with the handles and click <b>Save and Reload</b>. <b>Reset Order</b> goes back to Odoo's order.</p>
+    <img src="screenshots/feat_01_global_order.png" alt="Application order dialog" style="width:100%;max-width:820px;display:block;margin:0 auto;"/>
+  </div>
+  <div style="margin-bottom:40px;">
+    <h3 style="font-size:20px;font-weight:700;margin:0 0 6px;"><span style="display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;border-radius:50%;background:#0d9488;color:#fff;font-size:16px;margin-right:10px;">2</span>Everyone gets the new order</h3>
+    <p style="color:#4b5563;font-size:16px;margin:0 0 14px 42px;">The applications menu and home screen follow the new order. Applications installed later appear after the ordered ones.</p>
+    <img src="screenshots/feat_02_app_order_result.png" alt="Applications in the new order" style="width:100%;max-width:620px;display:block;margin:0 auto;"/>
+  </div>
+  <div style="margin-bottom:40px;">
+    <h3 style="font-size:20px;font-weight:700;margin:0 0 6px;"><span style="display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;border-radius:50%;background:#0d9488;color:#fff;font-size:16px;margin-right:10px;">3</span>Configure a user on the user form</h3>
+    <p style="color:#4b5563;font-size:16px;margin:0 0 14px 42px;">Open <b>Settings › Users</b>, choose a user and the <b>Menu Management</b> tab: hide menus for this user, switch on <b>Favorite Menus</b>, <b>Recent Menus</b> and <b>Hide Menus Through Preferences</b>, set their favorites, or click <b>Application Order</b> to give this user their own order. The same switches are in <b>Settings › Menu Management › User Menu Settings</b> for many users at once.</p>
+    <img src="screenshots/feat_05_user_tab.png" alt="Menu Management tab on the user form" style="width:100%;max-width:100%;display:block;margin:0 auto;"/>
+  </div>
+  <div style="margin-bottom:40px;">
+    <h3 style="font-size:20px;font-weight:700;margin:0 0 6px;"><span style="display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;border-radius:50%;background:#0d9488;color:#fff;font-size:16px;margin-right:10px;">4</span>Favorites: the star in the top bar</h3>
+    <p style="color:#4b5563;font-size:16px;margin:0 0 14px 42px;">Users with <b>Favorite Menus</b> open any menu, click the <b>star</b> and <b>Add “…” to favorites</b>. Their favorites are one click away from anywhere in Odoo.</p>
+    <img src="screenshots/feat_03_favorites.png" alt="Add the current menu to favorites" style="width:100%;max-width:760px;display:block;margin:0 auto;"/>
+  </div>
+  <div style="margin-bottom:40px;">
+    <h3 style="font-size:20px;font-weight:700;margin:0 0 6px;"><span style="display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;border-radius:50%;background:#0d9488;color:#fff;font-size:16px;margin-right:10px;">5</span>Open or remove favorites</h3>
+    <p style="color:#4b5563;font-size:16px;margin:0 0 14px 42px;">Click a favorite to open it; click <b>×</b> to remove it. Favorites follow the visibility rules: a menu hidden later simply disappears from the list.</p>
+    <img src="screenshots/feat_03b_favorites_list.png" alt="Favorite menus list" style="width:100%;max-width:760px;display:block;margin:0 auto;"/>
+  </div>
+  <div style="margin-bottom:40px;">
+    <h3 style="font-size:20px;font-weight:700;margin:0 0 6px;"><span style="display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;border-radius:50%;background:#0d9488;color:#fff;font-size:16px;margin-right:10px;">6</span>Recent menus: the history icon</h3>
+    <p style="color:#4b5563;font-size:16px;margin:0 0 14px 42px;">Users with <b>Recent Menus</b> find the last 10 menus they opened under the <b>history</b> icon, most recent first. The history is stored per user on the server, so it follows them to any device, and it is private: administrators cannot see it.</p>
+    <img src="screenshots/feat_04_recent.png" alt="Recent menus" style="width:100%;max-width:760px;display:block;margin:0 auto;"/>
+  </div>
+  <div style="margin-bottom:40px;">
+    <h3 style="font-size:20px;font-weight:700;margin:0 0 6px;"><span style="display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;border-radius:50%;background:#0d9488;color:#fff;font-size:16px;margin-right:10px;">7</span>Copy menu settings to other users</h3>
+    <p style="color:#4b5563;font-size:16px;margin:0 0 14px 42px;">On a user's <b>Menu Management</b> tab, click <b>Copy Menu Settings to Other Users</b>, choose the users and what to copy: hidden menus, personal hidden menus, favorites, application order and options.</p>
+    <img src="screenshots/feat_06_copy.png" alt="Copy menu settings" style="width:100%;max-width:820px;display:block;margin:0 auto;"/>
   </div>
 
   <!-- ============ OTHER SCREENS ============ -->
@@ -159,7 +215,7 @@
     <div style="flex:1 1 340px;border:1px solid #e5e7eb;border-radius:14px;padding:24px;">
       <h3 style="font-size:19px;font-weight:700;margin:0 0 10px;">Privacy &amp; performance</h3>
       <ul style="color:#4b5563;font-size:15px;padding-left:20px;margin:0;">
-        <li>Rules and personal choices are stored only in your Odoo database. Nothing is sent to DevsCodeSpace or any third party.</li>
+        <li>Rules, personal choices, favorites, application order and recent menus are stored only in your Odoo database. Nothing is sent to DevsCodeSpace or any third party.</li>
         <li>Results are cached: no extra database query when menus are already cached.</li>
         <li>Tested with 3,500 menus and 1,000 rules.</li>
       </ul>
@@ -175,6 +231,10 @@
     <p style="color:#4b5563;margin:0 0 18px;">At their next page reload, like any Odoo menu change.</p>
     <p style="font-weight:700;margin:0 0 4px;">How do I undo a restriction?</p>
     <p style="color:#4b5563;margin:0 0 18px;">Click the eye button again, archive the rule in <i>Visibility Rules</i>, or open the menu in <i>All Menus</i> and click <i>Remove Restrictions</i>.</p>
+    <p style="font-weight:700;margin:0 0 4px;">Does changing the application order change Odoo's menus?</p>
+    <p style="color:#4b5563;margin:0 0 18px;">No. The order is stored separately and applied when menus are loaded; Odoo's menu sequence is not modified, and uninstalling the app restores the original order.</p>
+    <p style="font-weight:700;margin:0 0 4px;">Can administrators see what users opened?</p>
+    <p style="color:#4b5563;margin:0 0 18px;">No. Recent menus are private to each user, administrators included.</p>
     <p style="font-weight:700;margin:0 0 4px;">What happens on upgrade or uninstall?</p>
     <p style="color:#4b5563;margin:0 0 18px;">Upgrades keep all rules and personal choices. Uninstalling removes the app's own data and every menu returns to Odoo's standard visibility.</p>
     <p style="font-weight:700;margin:0 0 4px;">Does it work with Odoo Enterprise?</p>

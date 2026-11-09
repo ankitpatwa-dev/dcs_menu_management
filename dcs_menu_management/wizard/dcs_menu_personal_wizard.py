@@ -72,6 +72,10 @@ class DcsMenuPersonalWizard(models.TransientModel):
         self.env.user.write({'dcs_personal_hidden_menu_ids': [Command.set(hidden.ids)]})
         return {'type': 'ir.actions.client', 'tag': 'reload'}
 
+    def action_open_app_order(self):
+        self.ensure_one()
+        return self.env.user.action_dcs_open_app_order()
+
     def action_show_all(self):
         self.ensure_one()
         self.line_ids.hidden = False

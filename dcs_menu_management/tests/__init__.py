@@ -4,4 +4,5 @@
 from . import test_visibility
 from . import test_personal
 from . import test_admin
+from . import test_shortcuts
 from . import test_http

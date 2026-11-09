@@ -65,3 +65,18 @@ class TestMenuHttp(DcsMenuCase, HttpCase):
         self.user_1.dcs_allow_menu_preferences = True
         self.start_tour('/odoo', 'dcs_menu_management_my_menus', login='dcs_user_1')
         self.assertEqual(self.user_1.dcs_personal_hidden_menu_ids, self.section)
+
+    def test_12_shortcuts_tour(self):
+        self.admin.write({'dcs_show_favorites': True, 'dcs_show_recent': True})
+        self.start_tour('/odoo', 'dcs_menu_management_shortcuts', login='dcs_admin')
+        self.assertIn(self.app, self.admin.dcs_favorite_menu_ids)
+        recent = self.env['dcs.menu.recent'].sudo().search([('user_id', '=', self.admin.id)])
+        self.assertIn(self.app, recent.menu_id)
+
+    def test_13_shortcut_session_flags(self):
+        self.authenticate('dcs_user_1', 'dcs_user_1')
+        info = self.make_jsonrpc_request('/web/session/get_session_info')
+        self.assertFalse(info.get('dcs_show_favorites') or info.get('dcs_show_recent'))
+        self.user_1.write({'dcs_show_favorites': True, 'dcs_show_recent': True})
+        info = self.make_jsonrpc_request('/web/session/get_session_info')
+        self.assertTrue(info.get('dcs_show_favorites') and info.get('dcs_show_recent'))
