@@ -15,7 +15,7 @@ class TestMenuHttp(DcsMenuCase, HttpCase):
     def load_web_menus(self, cids=None):
         if cids is not None:
             self.opener.cookies.set('cids', '-'.join(str(c) for c in cids))
-        response = self.url_open('/web/webclient/load_menus/dcs-test-%s' % (cids or ''))
+        response = self.url_open('/web/webclient/load_menus')
         self.assertEqual(response.status_code, 200)
         return {int(k) for k in json.loads(response.content) if k != 'root'}
 
@@ -30,26 +30,13 @@ class TestMenuHttp(DcsMenuCase, HttpCase):
         # a company the user does not belong to is ignored -> default company (A)
         self.assertNotIn(self.item_a.id, self.load_web_menus([self.main_company.id]))
 
-        # the browser caches the menus by hash: it must differ per company
-        def menu_hash(cids):
-            self.opener.cookies.set('cids', '-'.join(map(str, cids)))
-            info = self.make_jsonrpc_request('/web/session/get_session_info')
-            return info['cache_hashes']['load_menus']
-        hash_a = menu_hash([self.company_a.id])
-        hash_b = menu_hash([self.company_b.id])
-        self.assertNotEqual(hash_a, hash_b)
-        self.assertEqual(hash_a, menu_hash([self.company_a.id]))
 
-    def test_02_menu_hash_changes_with_rules(self):
-        """The web client caches menus by hash: a rule change must change it."""
+    def test_02_rule_changes_reach_the_web_client(self):
+        """Odoo 19 fetches menus with no-store on every page load: a rule
+        change must be visible on the next request."""
         self.authenticate('dcs_user_1', 'dcs_user_1')
-        def menu_hash():
-            info = self.make_jsonrpc_request('/web/session/get_session_info')
-            return info['cache_hashes']['load_menus']
-        before = menu_hash()
+        self.assertIn(self.item_direct.id, self.load_web_menus())
         self.rule(self.item_direct, hide_user_ids=[Command.set(self.user_1.ids)])
-        after = menu_hash()
-        self.assertNotEqual(before, after)
         self.assertNotIn(self.item_direct.id, self.load_web_menus())
 
     def test_03_session_flag(self):

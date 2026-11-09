@@ -509,7 +509,7 @@ class IrUiMenu(models.Model):
         self._dcs_check_manager()
         Menu = self.with_context(active_test=False, **FULL_LIST_CTX)
         menus = Menu.search_fetch([], ['name', 'parent_id', 'sequence', 'action',
-                                       'active', 'groups_id', 'web_icon'])
+                                       'active', 'group_ids', 'web_icon'])
         xmlids = menus._get_menuitems_xmlids()
         actions = menus._dcs_action_labels()
         rules = self.env['dcs.menu.rule'].with_context(active_test=False).search(
@@ -522,7 +522,7 @@ class IrUiMenu(models.Model):
         for user in users:
             for menu_id in user.dcs_personal_hidden_menu_ids.ids:
                 personal_counts[menu_id] += 1
-        group_names = {g.id: g.full_name for g in menus.groups_id}
+        group_names = {g.id: g.full_name for g in menus.group_ids}
         protected = self._dcs_protected_menu_ids()
 
         preview = None
@@ -554,7 +554,7 @@ class IrUiMenu(models.Model):
                 'active': menu.active,
                 'xmlid': xmlids.get(menu.id, ''),
                 'action': actions.get(menu.id) or '',
-                'groups': [group_names[g] for g in menu.groups_id.ids if g in group_names],
+                'groups': [group_names[g] for g in menu.group_ids.ids if g in group_names],
                 'protected': menu.id in protected,
                 'personal_count': personal_counts.get(menu.id, 0),
                 'rule': rule and {

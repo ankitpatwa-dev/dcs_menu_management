@@ -134,7 +134,7 @@
                         domain="['|', ('hide_group_ids', '!=', False), ('show_group_ids', '!=', False)]"/>
                 <separator/>
                 <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
-                <group expand="0" string="Group By">
+                <group>
                     <filter name="group_changed_by" string="Changed By" context="{'group_by': 'write_uid'}"/>
                 </group>
             </search>

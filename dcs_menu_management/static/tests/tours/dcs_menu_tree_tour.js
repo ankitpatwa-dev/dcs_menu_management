@@ -126,6 +126,7 @@ registry.category("web_tour.tours").add("dcs_menu_management_my_menus", {
             content: "Save and reload",
             trigger: ".modal button[name='action_apply']",
             run: "click",
+            expectUnloadPage: true,
         },
         {
             content: "Page reloaded without the dialog",

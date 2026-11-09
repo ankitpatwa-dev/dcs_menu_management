@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Copyright 2026 DevsCodeSpace. License LGPL-3. -->
 <odoo>
-    <record id="module_category_menu_management" model="ir.module.category">
+    <record id="res_groups_privilege_menu_management" model="res.groups.privilege">
         <field name="name">Menu Management</field>
-        <field name="parent_id" ref="base.module_category_administration"/>
         <field name="description">Configure who sees which menus (Advanced Menu Management by DevsCodeSpace).</field>
         <field name="sequence">90</field>
+        <field name="category_id" ref="base.module_category_administration"/>
     </record>
 
     <!-- Standard Odoo groups are not modified: Settings administrators are
          recognised through base.group_system directly in code, ACLs and menus. -->
     <record id="group_menu_manager" model="res.groups">
         <field name="name">Menu Manager</field>
-        <field name="category_id" ref="module_category_menu_management"/>
+        <field name="privilege_id" ref="res_groups_privilege_menu_management"/>
         <field name="comment">Can configure menu visibility rules and personal menu permissions. Settings administrators always have this right. The user also needs access to the Settings app (Administration: Access Rights) to reach the Menu Management menu.</field>
     </record>
 

@@ -2,13 +2,13 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0).
 {
     'name': 'Advanced Menu Management',
-    'version': '18.0.1.0.0',
+    'version': '19.0.1.0.0',
     'summary': 'Hide or show Odoo menus globally, per user, company or '
                'security group, and let users hide the menus they do not use.',
     'description': """
 Advanced Menu Management
 ========================
-Centralised, auditable menu visibility for Odoo 18:
+Centralised, auditable menu visibility for Odoo 19:
 
 * Interactive menu tree with search, filters and a per-user preview
 * Hide menus globally, for users, companies or security groups
